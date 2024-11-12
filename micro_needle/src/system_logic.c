@@ -21,7 +21,7 @@ bool Chargn_Off_State;
  void system_inactive(void) {
 	 motor_disable();							// shutdown PWM motor
 	 pwm_led_system_cleanup();					// shutdown illumination led
-	 pwm_led_toggle_count = 0;					// reset counter to start the routine from begginging
+	 pwm_led_toggle_count = 0;					// reset counter to start the routine from beginning
  }
 
 
@@ -208,3 +208,4 @@ void get_battery_level(void) {
 		 get_battery_level();
 	 }
  }
+ 

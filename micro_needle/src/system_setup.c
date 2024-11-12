@@ -375,16 +375,16 @@ void enable_sleep_mode(){
 /* SYSTEM startup function call (config functions)						*/
 /************************************************************************/
 void startup_sys_configs(void){
-	system_init();									// System Initialize
-	system_interrupt_enable_global();				// System Interrupts
-	configure_port_pins();							// System PORTs
+	system_init();												// System Initialize
+	system_interrupt_enable_global();							// System Interrupts
+	configure_port_pins();										// System PORTs
 	startup_default_pin_state();
-	i2c_master_setup();								// Startup I2C
+	i2c_master_setup();											// Startup I2C
 
 
-	configure_system_tc();							// System Clock
-	system_tc_callbacks();							// System Clock Callback
-	configure_pwm_tcc();							// Startup PWM
+	configure_system_tc();										// System Clock
+	system_tc_callbacks();										// System Clock Callback
+	configure_pwm_tcc();										// Startup PWM
 	configure_adc();
 	configure_pwm_generator();
 
@@ -392,6 +392,7 @@ void startup_sys_configs(void){
 	configure_extint_channel();
 	configure_extint_callbacks();
 	extint_detection_callback();
-
-
+	
+	system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY);				// SET SLEEP MODE 0
+	system_sleep();
 }
