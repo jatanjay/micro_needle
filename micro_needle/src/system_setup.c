@@ -324,14 +324,6 @@ void configure_sleep_clock() {
 
 
 
-void enable_sleep_mode(void);
-
-void enable_sleep_mode(){
-	configure_sleep_clock();
-	system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY);
-	system_sleep();
-}
-
 
 
 
@@ -393,6 +385,6 @@ void startup_sys_configs(void){
 	configure_extint_callbacks();
 	extint_detection_callback();
 	
-	system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY);				// SET SLEEP MODE 0
-	system_sleep();
+	//system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY);				// SET SLEEP MODE 0
+	//system_sleep();
 }
