@@ -37,7 +37,7 @@ void regular_routine(void) {
 			LongPressB1Flag = false;															// ALLOW IT TO CYCLE AGAIN
 			} else {
 
-			if (!motor_status_changed && !led_button_status_changed) {
+			if (!motor_status_changed && !led_button_status_changed && !Vbus_State) {			// makeshift to stop led array working when connected
 				led_button_status_changed = true;
 				motor_status_changed = true;
 				pwm_led_toggle_count++;
