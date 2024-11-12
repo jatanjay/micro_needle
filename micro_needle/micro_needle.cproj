@@ -13,7 +13,7 @@
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
     <AssemblyName>TCC_FEATURES1</AssemblyName>
-    <Name>timer_pwm</Name>
+    <Name>micro_needle</Name>
     <RootNamespace>TCC_FEATURES1</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
