@@ -283,7 +283,38 @@ void nmi_init(void){
 	// gclk_eic enable
 }
 
+void configure_extint_channel(void);
+void configure_extint_callbacks(void);
+void extint_detection_callback(void);
+#define BUTTON_0_EIC_LINE_custom		1
 
+void configure_extint_channel(void)
+{
+	struct extint_chan_conf config_extint_chan;
+	extint_chan_get_config_defaults(&config_extint_chan);
+	config_extint_chan.gpio_pin           = PIN_PA15A_EIC_EXTINT1;
+	config_extint_chan.gpio_pin_mux       = MUX_PA15A_EIC_EXTINT1;
+	config_extint_chan.wake_if_sleeping   = true;
+	config_extint_chan.gpio_pin_pull      = EXTINT_PULL_UP;
+	config_extint_chan.detection_criteria = EXTINT_DETECT_BOTH;
+	extint_chan_set_config(BUTTON_0_EIC_LINE_custom, &config_extint_chan);
+}
+
+void configure_extint_callbacks(void)
+{
+	extint_register_callback(extint_detection_callback,
+	BUTTON_0_EIC_LINE_custom,
+	EXTINT_CALLBACK_TYPE_DETECT);
+	extint_chan_enable_callback(BUTTON_0_EIC_LINE_custom,
+	EXTINT_CALLBACK_TYPE_DETECT);
+}
+
+void extint_detection_callback(void)
+{
+	//motor_enable();
+	//LED_Off(LED0_PIN);
+	//set_color_cyan_indication();
+}
 
   
 
@@ -332,49 +363,14 @@ void startup_sys_configs(void){
 	
 	
 	
-	//configure_sleep_clock();
-
-	//configure_extint_channel();
-	//configure_extint_callbacks();
-	//extint_detection_callback();
-	//system_set_sleepmode(SYSTEM_SLEEPMODE_IDLE_0);					// set sleep mode 0
-	
-	
-	//system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY);						// set sleep mode 0
-	//system_sleep();
+	configure_sleep_clock();
+	configure_extint_channel();
+	configure_extint_callbacks();
+	extint_detection_callback();
+	system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY);						// set sleep mode 0
+	system_sleep();
 }
 
 
 
 
-//void configure_extint_channel(void);
-//void configure_extint_callbacks(void);
-//void extint_detection_callback(void);
-//#define BUTTON_0_EIC_LINE_custom		1
-//
-//void configure_extint_channel(void)
-//{
-	//struct extint_chan_conf config_extint_chan;
-	//extint_chan_get_config_defaults(&config_extint_chan);
-	//config_extint_chan.gpio_pin           = PIN_PA15A_EIC_EXTINT1;
-	//config_extint_chan.gpio_pin_mux       = MUX_PA15A_EIC_EXTINT1;
-	//config_extint_chan.wake_if_sleeping   = true;
-	//config_extint_chan.gpio_pin_pull      = EXTINT_PULL_UP;
-	//config_extint_chan.detection_criteria = EXTINT_DETECT_BOTH;
-	//extint_chan_set_config(BUTTON_0_EIC_LINE_custom, &config_extint_chan);
-//}
-
-//void configure_extint_callbacks(void)
-//{
-	//extint_register_callback(extint_detection_callback,
-	//BUTTON_0_EIC_LINE_custom,
-	//EXTINT_CALLBACK_TYPE_DETECT);
-	//extint_chan_enable_callback(BUTTON_0_EIC_LINE_custom,
-	//EXTINT_CALLBACK_TYPE_DETECT);
-//}
-
-//void extint_detection_callback(void)
-//{
-	////motor_enable();
-	////LED_Off(LED0_PIN);
-//}
