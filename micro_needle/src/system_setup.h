@@ -52,6 +52,7 @@ extern bool SYS_TICK_10MS;
 extern bool SYS_TICK_50MS;
 extern bool SYS_TICK_100MS;
 extern bool SYS_TICK_200MS;
+extern bool SYS_SLEEP;
 //extern bool SYS_TICK_500MS;
 //extern bool SYS_TICK_1000MS;
 

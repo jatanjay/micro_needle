@@ -13,6 +13,10 @@ bool SYS_TICK_10MS = false;
 bool SYS_TICK_50MS = false;
 bool SYS_TICK_100MS = false;
 bool SYS_TICK_200MS = false;
+
+
+bool SYS_SLEEP = false;
+int sys_tick_count = 0;
 //bool SYS_TICK_500MS = false;
 //bool SYS_TICK_1000MS = false;
 
@@ -205,6 +209,15 @@ void sys_tc_callback(struct tc_module *const module_inst)
 		SYS_TICK_200MS = true;									// Flag for 200ms interval
 		//port_pin_toggle_output_level (LED0_PIN);				// visually check sys clock on PA16
 	}
+	
+	
+	if (SYS_TICK_200MS){
+		sys_tick_count ++;
+		if (sys_tick_count > 90){
+			//sys_tick_count = 0;
+			SYS_SLEEP = true;
+		}
+	}
 
 	//if (tick_count_200ms >= 2)
 	//{
@@ -316,6 +329,21 @@ void extint_detection_callback(void)
 	//set_color_cyan_indication();
 }
 
+
+
+
+
+//void sys_sleep_logic(void);
+//
+//void sys_sleep_logic(void){
+	//// if sys_tick lesser than 30 mins, start sleep
+	//if (SYS_SLEEP){
+		//SYS_SLEEP = false;
+		//set_color_cyan_indication();
+		////system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY);						// set sleep mode 0
+		////system_sleep();
+	//}
+//}
   
 
 void configure_sleep_clock(void);
@@ -367,8 +395,7 @@ void startup_sys_configs(void){
 	configure_extint_channel();
 	configure_extint_callbacks();
 	extint_detection_callback();
-	system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY);						// set sleep mode 0
-	system_sleep();
+	
 }
 
 

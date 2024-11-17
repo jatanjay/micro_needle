@@ -63,7 +63,7 @@ void display_battery_state(void) {
 					} else if (BATTERY_CHARGED) {
 					set_color_green_indication();
 					} else {
-					set_color_yellow_indication();			// ideal situation
+					//set_color_yellow_indication();			// ideal situation
 					}	
 		}else{
 		}

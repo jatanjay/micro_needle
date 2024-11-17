@@ -228,6 +228,18 @@ void get_battery_level(void) {
  /************************************************************************/
  /* LOGIC MACHINE		                                                */
  /************************************************************************/
+void sys_sleep_logic(void);
+
+void sys_sleep_logic(void){
+	// if sys_tick lesser than 30 mins, start sleep
+	if (SYS_SLEEP){
+		SYS_SLEEP = false;
+		//set_color_cyan_indication();
+		set_color_yellow_indication();
+		system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY);						// set sleep mode 0
+		system_sleep();
+	}
+}
 
 
  void system_logic(void) {
@@ -242,5 +254,11 @@ void get_battery_level(void) {
 		 sample_adc();
 		 get_battery_level();
 	 }
+	 
+	 if (SYS_SLEEP){
+		sys_sleep_logic();
+	 }
+	 
+	 
  }
  
