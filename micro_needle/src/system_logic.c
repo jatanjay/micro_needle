@@ -31,10 +31,42 @@ void regular_routine(void) {
 
 	//-------------------------------------------------------------
 
-	if (is_button_one_pressed()) {
-		if (LongPressB1Flag) {
+	//if (is_button_one_pressed()) {
+		//if (LongPressB1Flag) {
+			//system_inactive();
+			//LongPressB1Flag = false;															// ALLOW IT TO CYCLE AGAIN
+			//} else {
+//
+			//if (!motor_status_changed && !led_button_status_changed && !Vbus_State) {			// makeshift to stop led array working when connected
+				//led_button_status_changed = true;
+				//motor_status_changed = true;
+				//pwm_led_toggle_count++;
+				//motor_toggle_count++;
+				//cycle_pwm_led();
+				//
+				//if (!motor_running && motor_toggle_count == 1) {
+					//motor_enable();
+					//} else {
+					//cycle_pwm_motor();
+				//}
+			//}
+		//}
+	//}
+//
+	//if (BUTTON_ONE_RELEASE_STATUS) {
+		//motor_status_changed = false;
+		//led_button_status_changed = false;
+	//}
+
+
+	/** shift from button 1 --> 2 11/17
+	
+	**/
+	
+		if (is_button_two_pressed()) {
+		if (LongPressB2Flag) {
 			system_inactive();
-			LongPressB1Flag = false;															// ALLOW IT TO CYCLE AGAIN
+			LongPressB2Flag = false;															// ALLOW IT TO CYCLE AGAIN
 			} else {
 
 			if (!motor_status_changed && !led_button_status_changed && !Vbus_State) {			// makeshift to stop led array working when connected
@@ -53,10 +85,13 @@ void regular_routine(void) {
 		}
 	}
 
-	if (BUTTON_ONE_RELEASE_STATUS) {
+	if (BUTTON_TWO_RELEASE_STATUS) {
 		motor_status_changed = false;
 		led_button_status_changed = false;
 	}
+	
+
+
 
 	//-------------------------------------------------------------
 

@@ -227,86 +227,67 @@ void sys_tc_callback(struct tc_module *const module_inst)
 
 
 
+//SW0_EIC_PIN;
+//SW0_EIC_MUX;
+//SW0_EIC_LINE;  
 
 
+void configure_gclock_generator(void);
+void configure_gclock_channel(void);
 
-
-
-
-
-
-
-
-
-
-
-void configure_extint_channel(void);
-void configure_extint_callbacks(void);
-void extint_detection_callback(void);
-
-
-#define BUTTON_0_EIC_LINE_custom		1
-
-
-void configure_extint_channel(void)
+void configure_gclock_generator(void)
 {
 
-	struct extint_chan_conf config_extint_chan;
-	extint_chan_get_config_defaults(&config_extint_chan);
-
-	config_extint_chan.gpio_pin           = PIN_PA15A_EIC_EXTINT1;
-	config_extint_chan.gpio_pin_mux       = MUX_PA15A_EIC_EXTINT1;
-	config_extint_chan.wake_if_sleeping   = true;
-
-	config_extint_chan.gpio_pin_pull      = EXTINT_PULL_UP;
-	config_extint_chan.detection_criteria = EXTINT_DETECT_BOTH;
-	extint_chan_set_config(BUTTON_0_EIC_LINE_custom, &config_extint_chan);
+	struct system_gclk_gen_config gclock_gen_conf;
+	system_gclk_gen_get_config_defaults(&gclock_gen_conf);
+	gclock_gen_conf.source_clock    = EXTINT_CLK_GCLK;
+	gclock_gen_conf.division_factor = 128;
+	system_gclk_gen_set_config(GCLK_GENERATOR_1, &gclock_gen_conf);
+	system_gclk_gen_enable(GCLK_GENERATOR_1);
 
 }
 
-void configure_extint_callbacks(void)
+void configure_gclock_channel(void)
 {
-	extint_register_callback(extint_detection_callback,
-	BUTTON_0_EIC_LINE_custom,
-	EXTINT_CALLBACK_TYPE_DETECT);
+	struct system_gclk_chan_config gclk_chan_conf;
+	system_gclk_chan_get_config_defaults(&gclk_chan_conf);
+	gclk_chan_conf.source_generator = GCLK_GENERATOR_1;
+	system_gclk_chan_set_config(TC1_GCLK_ID, &gclk_chan_conf);
+	system_gclk_chan_enable(TC1_GCLK_ID);
+}
 
-	extint_chan_enable_callback(BUTTON_0_EIC_LINE_custom,
-	EXTINT_CALLBACK_TYPE_DETECT);
+void nmi_init(void);
+
+void nmi_init(void){
+	/*
+	The EIC must be initialized in the following order:
+	1. Enable CLK_EIC_APB
+	2. If edge detection or filtering is required, GCLK_EIC must be enabled
+	3. Write the EIC configuration registers (EVCTRL, WAKEUP, CONFIGy)
+	4. Enable the EIC
+	When NMI is used, GCLK_EIC must be enabled after EIC configuration (NMICTRL)
+	*/
+	
+	// 1
+	//configure_sleep_clock(); // maybe started CLK_EIC_APB clock?
+	// write eic registers
+	
+	
+	
+	
+	
+	
+	// enable eic
+	
+
+	// gclk_eic enable
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void extint_detection_callback(void)
-{
-	//motor_enable();
-	//LED_Off(LED0_PIN);
-
-}
-
-
-// todo
-
-/* extin on motor button, only for waking motor up, put is button pressed logic in callback */
-
-// clean up modules, system config.h
-
+  
 
 void configure_sleep_clock(void);
-
 void configure_sleep_clock() {
 	// Define the mask value
 	const uint32_t mask = 0x00000040;
@@ -318,35 +299,6 @@ void configure_sleep_clock() {
 		Assert(false);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /************************************************************************/
@@ -372,19 +324,57 @@ void startup_sys_configs(void){
 	configure_port_pins();										// System PORTs
 	startup_default_pin_state();
 	i2c_master_setup();											// Startup I2C
-
-
 	configure_system_tc();										// System Clock
 	system_tc_callbacks();										// System Clock Callback
 	configure_pwm_tcc();										// Startup PWM
 	configure_adc();
 	configure_pwm_generator();
-
-
-	configure_extint_channel();
-	configure_extint_callbacks();
-	extint_detection_callback();
 	
-	//system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY);				// SET SLEEP MODE 0
+	
+	
+	//configure_sleep_clock();
+
+	//configure_extint_channel();
+	//configure_extint_callbacks();
+	//extint_detection_callback();
+	//system_set_sleepmode(SYSTEM_SLEEPMODE_IDLE_0);					// set sleep mode 0
+	
+	
+	//system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY);						// set sleep mode 0
 	//system_sleep();
 }
+
+
+
+
+//void configure_extint_channel(void);
+//void configure_extint_callbacks(void);
+//void extint_detection_callback(void);
+//#define BUTTON_0_EIC_LINE_custom		1
+//
+//void configure_extint_channel(void)
+//{
+	//struct extint_chan_conf config_extint_chan;
+	//extint_chan_get_config_defaults(&config_extint_chan);
+	//config_extint_chan.gpio_pin           = PIN_PA15A_EIC_EXTINT1;
+	//config_extint_chan.gpio_pin_mux       = MUX_PA15A_EIC_EXTINT1;
+	//config_extint_chan.wake_if_sleeping   = true;
+	//config_extint_chan.gpio_pin_pull      = EXTINT_PULL_UP;
+	//config_extint_chan.detection_criteria = EXTINT_DETECT_BOTH;
+	//extint_chan_set_config(BUTTON_0_EIC_LINE_custom, &config_extint_chan);
+//}
+
+//void configure_extint_callbacks(void)
+//{
+	//extint_register_callback(extint_detection_callback,
+	//BUTTON_0_EIC_LINE_custom,
+	//EXTINT_CALLBACK_TYPE_DETECT);
+	//extint_chan_enable_callback(BUTTON_0_EIC_LINE_custom,
+	//EXTINT_CALLBACK_TYPE_DETECT);
+//}
+
+//void extint_detection_callback(void)
+//{
+	////motor_enable();
+	////LED_Off(LED0_PIN);
+//}
