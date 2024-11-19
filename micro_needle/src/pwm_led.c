@@ -138,10 +138,10 @@ void configure_pwm_tcc(void)
 //}
 
 // New update; only red color
-void enter_sleep(void){
-	system_set_sleepmode(SYSTEM_SLEEPMODE_IDLE_0);
-	system_sleep();
-}
+//void enter_sleep(void){
+	//system_set_sleepmode(SYSTEM_SLEEPMODE_IDLE_0);
+	//system_sleep();
+//}
 
 void cycle_pwm_led(void) {
 	switch (pwm_led_toggle_count) {

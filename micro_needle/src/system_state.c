@@ -7,8 +7,8 @@
 
  #include "system_state.h"
  
-bool Vbus_State;
-bool Charged_State;
+extern bool Vbus_State;
+extern bool Charged_State;
 bool Chargn_Off_State;
 
 bool BATTERY_CHARGING;
@@ -48,7 +48,8 @@ void display_battery_state(void) {
   */
 
 	if (Vbus_State) {
-		system_inactive();										// turn  off all motor/ led array if plugged in
+		//port_pin_set_output_level(BAT_CHARGED_PIN, false);
+		//system_inactive();										// turn  off all motor/ led array if plugged in
 		if (!Charged_State) {
 			set_battery_charge_routine();						//  blink
 		} else {

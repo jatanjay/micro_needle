@@ -16,12 +16,21 @@ bool BATTERY_LOWEST = false;
 bool Vbus_State;
 bool Chargn_On_State;
 bool Chargn_Off_State;
+bool Charged_State;
+
+bool SYS_TICK_10MS;
+bool SYS_TICK_200MS;
+bool SYS_SLEEP;
+
+int SleepTickCount;
 
 
  void system_inactive(void) {
 	 motor_disable();							// shutdown PWM motor
 	 pwm_led_system_cleanup();					// shutdown illumination led
 	 pwm_led_toggle_count = 0;					// reset counter to start the routine from beginning
+	 reset_chip();
+	 //port_pin_set_output_level(SWITCH_OFF_PIN,HIGH); // at high rev 2
  }
 
 
@@ -64,6 +73,7 @@ void regular_routine(void) {
 	**/
 	
 		if (is_button_two_pressed()) {
+			SleepTickCount = SLEEP_TICK_COUNT;
 		if (LongPressB2Flag) {
 			system_inactive();
 			LongPressB2Flag = false;															// ALLOW IT TO CYCLE AGAIN
@@ -75,7 +85,6 @@ void regular_routine(void) {
 				pwm_led_toggle_count++;
 				motor_toggle_count++;
 				cycle_pwm_led();
-				
 				if (!motor_running && motor_toggle_count == 1) {
 					motor_enable();
 					} else {
@@ -90,7 +99,6 @@ void regular_routine(void) {
 		led_button_status_changed = false;
 	}
 	
-
 
 
 	//-------------------------------------------------------------
@@ -112,15 +120,15 @@ void regular_routine(void) {
 	//}
 
 	if (Vbus_State == false) {
-		;																						// Enable Motor PWM
+		;																							// Enable Motor PWM
 		} else {
 		
 		if (motor_running){
 			system_inactive();
 		}
 		// ITS PLUGGED IN
-		if (Chargn_On_State == false) {															// battery charging (plugged in)
-			BATTERY_CHARGING = true;															// show battery charge routine
+		if (Chargn_On_State == false) {																// battery charging (plugged in)
+			BATTERY_CHARGING = true;																// show battery charge routine
 			} else {
 			BATTERY_CHARGING = false;
 		}
@@ -140,7 +148,7 @@ void regular_routine(void) {
 	 //if (is_button_one_pressed()) {
 		//if (LongPressB1Flag) {
 			//system_inactive();
-			//LongPressB1Flag = false;								// ALLOW IT TO CYCLE AGAIN
+			//LongPressB1Flag = false;																// ALLOW IT TO CYCLE AGAIN
 		//} else {
 			//if (!motor_status_changed) {
 				//motor_toggle_count++;
@@ -163,7 +171,7 @@ void regular_routine(void) {
 	 //if (is_button_two_pressed()) {
 		 //if (LongPressB2Flag) {
 			 //system_inactive();
-			 //LongPressB2Flag = false;															// ALLOW IT TO CYCLE AGAIN
+			 //LongPressB2Flag = false;																// ALLOW IT TO CYCLE AGAIN
 			 //} else {
 			 //if (!led_button_status_changed) {
 				 //pwm_led_toggle_count++;
@@ -177,15 +185,15 @@ void regular_routine(void) {
 	 //}
 //
 	 //if (Vbus_State == false) {
-		//;																						// Enable Motor PWM
+		//;																							// Enable Motor PWM
 	 //} else {
 	//
 		//if (motor_running){
 			//system_inactive();
 		//}
-																								//// ITS PLUGGED IN
+																									//// ITS PLUGGED IN
 		//if (Chargn_On_State == false) {															// battery charging (plugged in)
-			//BATTERY_CHARGING = true;															// show battery charge routine
+			//BATTERY_CHARGING = true;																// show battery charge routine
 		//} else {
 			//BATTERY_CHARGING = false;
 		//}
@@ -196,33 +204,72 @@ void regular_routine(void) {
 
 void get_battery_level(void) {
 
-	if (!motor_running) {
-		if (adc_result <= VOLTAGE_THRESH_LOWEST) {
-			// LOWEST SITUATION
-			BATTERY_LOWEST = true;
-			BATTERY_LOW = false;
-			BATTERY_CHARGED = false;
-		}
-		else if (adc_result <= VOLTAGE_THRESH_LOW) { // Ensure adc_result > VOLTAGE_THRESH_LOWEST
-			// LOW SITUATION
-			BATTERY_LOWEST = false;
-			BATTERY_LOW = true;
-			BATTERY_CHARGED = false;
-		}
-		else if (adc_result < VOLTAGE_THRESH_MAX) { // Ensure adc_result > VOLTAGE_THRESH_LOW
-			// IDEAL SITUATION -- OPERATING WINDOW
-			BATTERY_LOWEST = false;
-			BATTERY_LOW = false;
-			BATTERY_CHARGED = false;
-		}
-		else { // adc_result > VOLTAGE_THRESH_MAX
-			// FULLY CHARGED SITUATION
-			BATTERY_LOWEST = false;
-			BATTERY_LOW = false;
+	//if (!motor_running) {
+		//if (adc_result <= VOLTAGE_THRESH_LOWEST) {
+			//// LOWEST SITUATION
+			//BATTERY_LOWEST = true;
+			//BATTERY_LOW = false;
+			//BATTERY_CHARGED = false;
+		//}
+		//else if (adc_result < VOLTAGE_THRESH_LOW) { // Ensure adc_result > VOLTAGE_THRESH_LOWEST
+			//// LOW SITUATION
+			//BATTERY_LOWEST = false;
+			//BATTERY_LOW = true;
+			//BATTERY_CHARGED = false;
+		//}	
+		//else if (adc_result <= VOLTAGE_THRESH_MAX) { // Ensure adc_result > VOLTAGE_THRESH_LOW
+			//// IDEAL SITUATION -- OPERATING WINDOW
+			//BATTERY_LOWEST = false;
+			//BATTERY_LOW = false;
+			//BATTERY_CHARGED = false;
+		//}
+		//else (adc_result > VOLTAGE_THRESH_MAX){ // adc_result > VOLTAGE_THRESH_MAX
+			//// FULLY CHARGED SITUATION
+			//BATTERY_LOWEST = false;
+			//BATTERY_LOW = false;
+			//BATTERY_CHARGED = true;
+//
+	//}
+	
+	bool logic = !motor_running && !Vbus_State;
+	
+	if (logic){
+			if (adc_result <= VOLTAGE_THRESH_LOWEST) {
+				// LOWEST SITUATION
+				BATTERY_LOWEST = true;
+				BATTERY_LOW = false;
+				BATTERY_CHARGED = false;
+			}
+			else if (adc_result > VOLTAGE_THRESH_LOWEST && adc_result <= VOLTAGE_THRESH_LOW) { // Ensure adc_result > VOLTAGE_THRESH_LOWEST
+				// LOW SITUATION
+				BATTERY_LOWEST = false;
+				BATTERY_LOW = true;
+				BATTERY_CHARGED = false;
+			} else if (adc_result > VOLTAGE_THRESH_LOW && adc_result <= VOLTAGE_THRESH_MAX){
+				BATTERY_LOWEST = false;
+				BATTERY_LOW = false;
+				BATTERY_CHARGED = false;
+				//Charged_State = false;
+			} 
+			else{
+				BATTERY_LOWEST = false;
+				BATTERY_LOW = false;
+				BATTERY_CHARGED = true;
+			}		
+
+	} 
+	else 
+	{
+		if (Charged_State)
+		{
 			BATTERY_CHARGED = true;
 		}
 	}
+	
 }
+
+
+
 
 
  /************************************************************************/
@@ -230,15 +277,16 @@ void get_battery_level(void) {
  /************************************************************************/
 void sys_sleep_logic(void);
 
-void sys_sleep_logic(void){
-	// if sys_tick lesser than 30 mins, start sleep
-	if (SYS_SLEEP){
-		SYS_SLEEP = false;
-		//set_color_cyan_indication();
-		set_color_yellow_indication();
+void put_to_sleep(void);
+void put_to_sleep(void){
+		system_inactive();													// once entered sleep mode -- sys inactive
 		system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY);						// set sleep mode 0
 		system_sleep();
-	}
+}
+
+void sys_sleep_logic(void){
+	put_to_sleep();
+	
 }
 
 
@@ -256,6 +304,7 @@ void sys_sleep_logic(void){
 	 }
 	 
 	 if (SYS_SLEEP){
+		SYS_SLEEP = false;
 		sys_sleep_logic();
 	 }
 	 

@@ -43,9 +43,9 @@ void system_inactive(void);
 void system_logic(void);
 void get_battery_level(void);
 
-#define VOLTAGE_THRESH_MAX		0x0E8F
-#define VOLTAGE_THRESH_LOW		0x0D2C
-#define VOLTAGE_THRESH_LOWEST	0x0C7A
+#define VOLTAGE_THRESH_MAX		0x0DDD
+#define VOLTAGE_THRESH_LOW		0x0DD4 // 0x0D2C
+#define VOLTAGE_THRESH_LOWEST	0x0DD0 // 0x0C7A
 
 /*
 0x0C7A (3194.88) -- Calculated (3.6v)

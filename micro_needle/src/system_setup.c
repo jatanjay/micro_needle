@@ -9,16 +9,16 @@
 
 
 
-bool SYS_TICK_10MS = false;
-bool SYS_TICK_50MS = false;
-bool SYS_TICK_100MS = false;
-bool SYS_TICK_200MS = false;
+extern bool SYS_TICK_10MS = false;
+extern bool SYS_TICK_50MS = false;
+extern bool SYS_TICK_100MS = false;
+extern bool SYS_TICK_200MS = false;
 
 
-bool SYS_SLEEP = false;
-int sys_tick_count = 0;
-//bool SYS_TICK_500MS = false;
-//bool SYS_TICK_1000MS = false;
+extern bool SYS_SLEEP = false;
+extern int SleepTickCount			 =		SLEEP_TICK_COUNT;
+
+
 
 
 
@@ -103,8 +103,8 @@ int sys_tick_count = 0;
 	*/
 	
 	config_port_pin.direction  = PORT_PIN_DIR_INPUT;
-	config_port_pin.input_pull = PORT_PIN_PULL_DOWN;							// START AT PULL DOWN.
-	port_pin_set_config(SAMPLE_ADC_PIN, &config_port_pin);
+	//config_port_pin.input_pull = PORT_PIN_PULL_DOWN;							// START AT PULL DOWN.
+	//port_pin_set_config(SAMPLE_ADC_PIN, &config_port_pin);
 	
 
 
@@ -212,9 +212,8 @@ void sys_tc_callback(struct tc_module *const module_inst)
 	
 	
 	if (SYS_TICK_200MS){
-		sys_tick_count ++;
-		if (sys_tick_count > 90){
-			//sys_tick_count = 0;
+		SleepTickCount--;
+		if (SleepTickCount < 1){
 			SYS_SLEEP = true;
 		}
 	}
@@ -300,6 +299,8 @@ void configure_extint_channel(void);
 void configure_extint_callbacks(void);
 void extint_detection_callback(void);
 #define BUTTON_0_EIC_LINE_custom		1
+#define PA_11_EIC_LINE_custom		    3
+
 
 void configure_extint_channel(void)
 {
@@ -311,6 +312,15 @@ void configure_extint_channel(void)
 	config_extint_chan.gpio_pin_pull      = EXTINT_PULL_UP;
 	config_extint_chan.detection_criteria = EXTINT_DETECT_BOTH;
 	extint_chan_set_config(BUTTON_0_EIC_LINE_custom, &config_extint_chan);
+	
+	
+	extint_chan_get_config_defaults(&config_extint_chan);
+	config_extint_chan.gpio_pin           = PIN_PA11A_EIC_EXTINT3;
+	config_extint_chan.gpio_pin_mux       = MUX_PA11A_EIC_EXTINT3;
+	config_extint_chan.wake_if_sleeping   = true;
+	config_extint_chan.gpio_pin_pull      = EXTINT_PULL_UP;
+	config_extint_chan.detection_criteria = EXTINT_DETECT_BOTH;
+	extint_chan_set_config(PA_11_EIC_LINE_custom, &config_extint_chan);
 }
 
 void configure_extint_callbacks(void)
@@ -320,6 +330,12 @@ void configure_extint_callbacks(void)
 	EXTINT_CALLBACK_TYPE_DETECT);
 	extint_chan_enable_callback(BUTTON_0_EIC_LINE_custom,
 	EXTINT_CALLBACK_TYPE_DETECT);
+	
+	extint_register_callback(extint_detection_callback,
+	PA_11_EIC_LINE_custom,
+	EXTINT_CALLBACK_TYPE_DETECT);
+	extint_chan_enable_callback(PA_11_EIC_LINE_custom,
+	EXTINT_CALLBACK_TYPE_DETECT);
 }
 
 void extint_detection_callback(void)
@@ -327,10 +343,22 @@ void extint_detection_callback(void)
 	//motor_enable();
 	//LED_Off(LED0_PIN);
 	//set_color_cyan_indication();
+	SleepTickCount = SLEEP_TICK_COUNT;
+	
 }
 
 
 
+
+
+
+
+//void put_to_sleep(void);
+//void put_to_sleep(void){
+	//system_inactive();													// once entered sleep mode -- sys inactive
+	//system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY);						// set sleep mode 0
+	//system_sleep();
+//}
 
 
 //void sys_sleep_logic(void);
@@ -366,13 +394,14 @@ void configure_sleep_clock() {
 
  void startup_default_pin_state(void){
 	 port_pin_set_output_level(MOTOR_NSLEEP_PIN,LOW);
-	 port_pin_set_output_level(SWITCH_OFF_PIN,HIGH); // at high rev 2
+	 port_pin_set_output_level(SWITCH_OFF_PIN,HIGH);					// at high rev 2
 	 port_pin_set_output_level(BUTTON_2,LOW);
 	 port_pin_set_output_level(BAT_CHARGED_PIN,LOW);
 	 port_pin_set_output_level(CHARGN_OFF_PIN,HIGH);
-	 port_pin_set_output_level(SAMPLE_ADC_PIN,LOW);
+	 //port_pin_set_output_level(SAMPLE_ADC_PIN,LOW);
  }
 
+void put_to_sleep(void);
 
 /************************************************************************/
 /* SYSTEM startup function call (config functions)						*/

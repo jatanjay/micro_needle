@@ -48,14 +48,27 @@ struct tc_module system_timer_instance;									// instance for system timer cou
 #define SYSTEM_TC_PIN_OUT												PIN_PA16E_TC1_WO0
 #define SYSTEM_TC_MUX_OUT												MUX_PA16E_TC1_WO0
 
-extern bool SYS_TICK_10MS;
-extern bool SYS_TICK_50MS;
-extern bool SYS_TICK_100MS;
-extern bool SYS_TICK_200MS;
-extern bool SYS_SLEEP;
+#define SLEEP_TIME_IN_MIN			10
+#define SLEEP_TICK_COUNT			5*SLEEP_TIME_IN_MIN*60
+
+
+//extern bool SYS_TICK_10MS;
+//extern bool SYS_TICK_50MS;
+//extern bool SYS_TICK_100MS;
+//extern bool SYS_TICK_200MS;
+//extern bool SYS_SLEEP;
+
 //extern bool SYS_TICK_500MS;
 //extern bool SYS_TICK_1000MS;
 
+
+//bool SYS_SLEEP = false;
+
+
+
+//#define SLEEP_TIME_IN_MIN			1
+//#define SLEEP_TICK_COUNT			5*SLEEP_TIME_IN_MIN*60
+//int SleepTickCount			 =		SLEEP_TICK_COUNT;
 
 /************************************************************************/
 /* Function Prototypes													*/

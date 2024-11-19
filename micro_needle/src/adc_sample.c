@@ -14,6 +14,7 @@ void configure_adc(void)
 {
 	struct adc_config config_adc;
 	adc_get_config_defaults(&config_adc);
+	//config_adc.gain_factor = ADC_GAIN_FACTOR_DIV2;
 	adc_init(&adc_instance, ADC, &config_adc);
 	adc_enable(&adc_instance);
 }
