@@ -57,15 +57,26 @@ void display_battery_state(void) {
 		}
 	} else {
 		if (!motor_running){
+				//if (BATTERY_LOWEST) {
+					//set_battery_low_routine();					//  blink
+				//} else if (BATTERY_LOW) {
+					//set_color_red_indication();
+				//} else if (BATTERY_CHARGED) {
+					//set_color_green_indication();
+				//} else {
+					////set_color_yellow_indication();			// ideal situation
+				//}	
 				if (BATTERY_LOWEST) {
+					//set_battery_low_routine();					//  blink
+				} else if (BATTERY_LOW) {
+					//set_color_red_indication();
 					set_battery_low_routine();					//  blink
-					} else if (BATTERY_LOW) {
-					set_color_red_indication();
-					} else if (BATTERY_CHARGED) {
+				} else if (BATTERY_CHARGED) {
 					set_color_green_indication();
-					} else {
+				} else {
 					//set_color_yellow_indication();			// ideal situation
-					}	
+					set_color_red_indication();
+				}
 		}else{
 		}
 	}

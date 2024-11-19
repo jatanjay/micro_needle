@@ -73,8 +73,8 @@ void regular_routine(void) {
 	
 	**/
 	
-		if (is_button_two_pressed()) {
-			SleepTickCount = SLEEP_TICK_COUNT;
+	if (is_button_two_pressed()) {
+		SleepTickCount = SLEEP_TICK_COUNT;
 		if (LongPressB2Flag) {
 			system_inactive();
 			LongPressB2Flag = false;															// ALLOW IT TO CYCLE AGAIN
@@ -86,15 +86,17 @@ void regular_routine(void) {
 
 				pwm_led_toggle_count++;
 				motor_toggle_count++;
-				cycle_pwm_led();
-				if (!motor_running && motor_toggle_count == 1) {
-					motor_enable();
-					} else {
-					//flash_pwm_led();
-					cycle_pwm_motor();
-				}
+				
+				//if(!BATTERY_LOWEST){
+					cycle_pwm_led();
+					if (!motor_running && motor_toggle_count == 1) {
+						motor_enable();
+						} else {
+						cycle_pwm_motor();
+					}
+				//}
 			}
-		}
+		}	
 	}
 
 	if (BUTTON_TWO_RELEASE_STATUS) {
@@ -102,6 +104,11 @@ void regular_routine(void) {
 		led_button_status_changed = false;
 	}
 	
+	if(BATTERY_LOWEST){
+		motor_disable();							// shutdown PWM motor
+		pwm_led_system_cleanup();					// shutdown illumination led
+		pwm_led_toggle_count = 0;	
+	}
 
 
 	//-------------------------------------------------------------
@@ -204,14 +211,15 @@ void regular_routine(void) {
 
 
 void get_battery_level(void) {
-	bool logic = !motor_running && !Vbus_State;
-	
+	//bool logic = !motor_running && !Vbus_State;
+	bool logic = !Vbus_State;
 	if (logic){
 			if (adc_result <= VOLTAGE_THRESH_LOWEST) {
 				// LOWEST SITUATION
 				BATTERY_LOWEST = true;
 				BATTERY_LOW = false;
 				BATTERY_CHARGED = false;
+				
 			}
 			else if (adc_result > VOLTAGE_THRESH_LOWEST && adc_result <= VOLTAGE_THRESH_LOW) { // Ensure adc_result > VOLTAGE_THRESH_LOWEST
 				// LOW SITUATION
@@ -247,8 +255,8 @@ void get_battery_level(void) {
  /* LOGIC MACHINE		                                                */
  /************************************************************************/
 void sys_sleep_logic(void);
-
 void put_to_sleep(void);
+
 void put_to_sleep(void){
 		system_inactive();													// once entered sleep mode -- sys inactive
 		system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY);						// set sleep mode 0
@@ -263,8 +271,9 @@ void sys_sleep_logic(void){
  void system_logic(void) {
 	 if (SYS_TICK_10MS) {
 		 SYS_TICK_10MS = false;
-		 system_state();						// Get latest system_state
+		 system_state();					// Get latest system_state
 		 regular_routine();
+
 	 }
 	 if (SYS_TICK_200MS) {
 		 SYS_TICK_200MS = false;
