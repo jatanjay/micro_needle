@@ -8,6 +8,8 @@
 #include "pwm_led.h"
 
 uint8_t pwm_led_toggle_count = 0;
+int flash_led_counter;
+extern void flash_pwm_led(void);
 
 
 void set_pwm_color_channel(uint8_t channel, bool enable) {
@@ -143,14 +145,32 @@ void configure_pwm_tcc(void)
 	//system_sleep();
 //}
 
+
+
 void cycle_pwm_led(void) {
+	flash_led_counter = 0;
 	switch (pwm_led_toggle_count) {
 		case 1:
-		SET_RED;
+		SET_RED;	
 		break;
 		case 6:
 		pwm_led_toggle_count = 0;
 		pwm_led_system_cleanup();							// Reset to 1 for red
 		break;
+	}
+}
+
+
+void flash_pwm_led(void){
+	
+	
+	if (flash_led_counter < 1){
+		SET_RED;
+	}
+	if (flash_led_counter > 1 && flash_led_counter <= 3){
+		SET_GRN;
+	}
+	if (flash_led_counter > 3){
+		SET_BLU;
 	}
 }

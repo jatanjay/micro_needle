@@ -23,6 +23,8 @@ bool SYS_TICK_200MS;
 bool SYS_SLEEP;
 
 int SleepTickCount;
+extern int flash_led_counter = 0;
+void flash_pwm_led(void);
 
 
  void system_inactive(void) {
@@ -30,7 +32,6 @@ int SleepTickCount;
 	 pwm_led_system_cleanup();					// shutdown illumination led
 	 pwm_led_toggle_count = 0;					// reset counter to start the routine from beginning
 	 reset_chip();
-	 //port_pin_set_output_level(SWITCH_OFF_PIN,HIGH); // at high rev 2
  }
 
 
@@ -78,16 +79,18 @@ void regular_routine(void) {
 			system_inactive();
 			LongPressB2Flag = false;															// ALLOW IT TO CYCLE AGAIN
 			} else {
-
 			if (!motor_status_changed && !led_button_status_changed && !Vbus_State) {			// makeshift to stop led array working when connected
 				led_button_status_changed = true;
 				motor_status_changed = true;
+				
+
 				pwm_led_toggle_count++;
 				motor_toggle_count++;
 				cycle_pwm_led();
 				if (!motor_running && motor_toggle_count == 1) {
 					motor_enable();
 					} else {
+					//flash_pwm_led();
 					cycle_pwm_motor();
 				}
 			}
@@ -137,8 +140,6 @@ void regular_routine(void) {
 }
 
 
-
-//
  //void regular_routine(void) {
 	 //static bool motor_status_changed = false;
 	 //static bool led_button_status_changed = false;
@@ -203,34 +204,6 @@ void regular_routine(void) {
 
 
 void get_battery_level(void) {
-
-	//if (!motor_running) {
-		//if (adc_result <= VOLTAGE_THRESH_LOWEST) {
-			//// LOWEST SITUATION
-			//BATTERY_LOWEST = true;
-			//BATTERY_LOW = false;
-			//BATTERY_CHARGED = false;
-		//}
-		//else if (adc_result < VOLTAGE_THRESH_LOW) { // Ensure adc_result > VOLTAGE_THRESH_LOWEST
-			//// LOW SITUATION
-			//BATTERY_LOWEST = false;
-			//BATTERY_LOW = true;
-			//BATTERY_CHARGED = false;
-		//}	
-		//else if (adc_result <= VOLTAGE_THRESH_MAX) { // Ensure adc_result > VOLTAGE_THRESH_LOW
-			//// IDEAL SITUATION -- OPERATING WINDOW
-			//BATTERY_LOWEST = false;
-			//BATTERY_LOW = false;
-			//BATTERY_CHARGED = false;
-		//}
-		//else (adc_result > VOLTAGE_THRESH_MAX){ // adc_result > VOLTAGE_THRESH_MAX
-			//// FULLY CHARGED SITUATION
-			//BATTERY_LOWEST = false;
-			//BATTERY_LOW = false;
-			//BATTERY_CHARGED = true;
-//
-	//}
-	
 	bool logic = !motor_running && !Vbus_State;
 	
 	if (logic){
@@ -245,18 +218,17 @@ void get_battery_level(void) {
 				BATTERY_LOWEST = false;
 				BATTERY_LOW = true;
 				BATTERY_CHARGED = false;
+				
 			} else if (adc_result > VOLTAGE_THRESH_LOW && adc_result <= VOLTAGE_THRESH_MAX){
 				BATTERY_LOWEST = false;
 				BATTERY_LOW = false;
 				BATTERY_CHARGED = false;
-				//Charged_State = false;
 			} 
 			else{
 				BATTERY_LOWEST = false;
 				BATTERY_LOW = false;
 				BATTERY_CHARGED = true;
 			}		
-
 	} 
 	else 
 	{
@@ -267,7 +239,6 @@ void get_battery_level(void) {
 	}
 	
 }
-
 
 
 
@@ -286,7 +257,6 @@ void put_to_sleep(void){
 
 void sys_sleep_logic(void){
 	put_to_sleep();
-	
 }
 
 
@@ -301,13 +271,20 @@ void sys_sleep_logic(void){
 		 toggle_nsleep();
 		 sample_adc();
 		 get_battery_level();
+		 
+		 if (motor_toggle_count == 0){
+			flash_led_counter++;	 
+			if (flash_led_counter > 7){
+				flash_led_counter = 7;
+			}
+			flash_pwm_led();
+		 }else{
+				flash_led_counter = 0; 
+		 }
 	 }
-	 
 	 if (SYS_SLEEP){
 		SYS_SLEEP = false;
 		sys_sleep_logic();
 	 }
-	 
-	 
  }
  
