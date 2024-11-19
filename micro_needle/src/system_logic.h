@@ -3,8 +3,7 @@
  *
  * Created: 7/22/2024 5:19:18 PM
  *  Author: jatan
- */ 
-
+ */
 
 #ifndef SYSTEM_LOGIC_H_
 #define SYSTEM_LOGIC_H_
@@ -25,12 +24,10 @@
 
 #include "adc_sample.h"
 
-
-
 typedef enum {
-	BATTERY_STATE_LOWEST,
-	BATTERY_STATE_LOW,
-	BATTERY_STATE_CHARGED,
+  BATTERY_STATE_LOWEST,
+  BATTERY_STATE_LOW,
+  BATTERY_STATE_CHARGED,
 } BatteryState;
 
 extern bool BATTERY_CHARGING;
@@ -43,15 +40,14 @@ void system_inactive(void);
 void system_logic(void);
 void get_battery_level(void);
 
-#define VOLTAGE_THRESH_MAX		0x0DDD	// 4
-#define VOLTAGE_THRESH_LOW		0x0C71 // 0x0D2C -- 3.6
-#define VOLTAGE_THRESH_LOWEST	0x0C4D // 0x0C7A -- 3.54
+#define VOLTAGE_THRESH_MAX 0x0DDD    // 4
+#define VOLTAGE_THRESH_LOW 0x0C71    // 0x0D2C -- 3.6
+#define VOLTAGE_THRESH_LOWEST 0x0C4D // 0x0C7A -- 3.54
 
 /*
 0x0C7A (3194.88) -- Calculated (3.6v)
 0x0D2C (3372.37) -- LWO THRESHOLD (3.8)
 0x0D1E (3358.00) -- Close to low threshold for testing
 */
-
 
 #endif /* SYSTEM_LOGIC_H_ */

@@ -3,12 +3,10 @@
  *
  * Created: 11/12/2024 11:37:21 AM
  *  Author: jatan
- */ 
-
+ */
 
 #ifndef README_H_
 #define README_H_
-
 
 /*
 
@@ -26,6 +24,5 @@ Update firmware for new board -- latest (1 button) requirement
 
 
 */
-
 
 #endif /* README_H_ */

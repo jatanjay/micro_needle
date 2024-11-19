@@ -1,8 +1,10 @@
 
 /************************************************************************/
-/* PWM_MOTOR_CONTROL :: 3 - SPEED, with system 10ms TC				    */
-/* auth: jatan pandya												    */
-/* date: 6/28/2024														*/
+/* PWM_MOTOR_CONTROL :: 3 - SPEED, with system 10ms TC */
+/* auth: jatan pandya
+ */
+/* date: 6/28/2024
+ */
 /************************************************************************/
 
 #include "asf.h"
@@ -23,16 +25,10 @@
 
 #include "adc_sample.h"
 
-
 int main(void) {
   startup_sys_configs();
   while (true) {
-    system_state();						// Get latest system_state
-    system_logic();						// Invoke System Logic
+    system_state(); // Get latest system_state
+    system_logic(); // Invoke System Logic
   }
 }
-
-
-
-
-

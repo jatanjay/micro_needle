@@ -7,31 +7,27 @@
 
 #include <button.h>
 
-
-
 /************************************************************************/
 /* BUTTON 1 LOGIC FLAGS	                                            */
 /************************************************************************/
- bool BUTTON_ONE_PRESS_STATUS = false;
- bool BUTTON_ONE_RELEASE_STATUS = false;
- bool LongPressB1Flag = false;
- int press_B1_delay_count = DELAY_DEBOUNCE_CN;
- int long_press_B1_delay_count = DELAY_PRESS_CN;
-
+bool BUTTON_ONE_PRESS_STATUS = false;
+bool BUTTON_ONE_RELEASE_STATUS = false;
+bool LongPressB1Flag = false;
+int press_B1_delay_count = DELAY_DEBOUNCE_CN;
+int long_press_B1_delay_count = DELAY_PRESS_CN;
 
 /************************************************************************/
 /* BUTTON 2 LOGIC FLAGS	                                            */
 /************************************************************************/
- bool BUTTON_TWO_PRESS_STATUS = false;
- bool BUTTON_TWO_RELEASE_STATUS = false;
- bool LongPressB2Flag = false;
- int press_B2_delay_count = DELAY_DEBOUNCE_CN;
- int long_press_B2_delay_count = DELAY_PRESS_CN;
-
-
+bool BUTTON_TWO_PRESS_STATUS = false;
+bool BUTTON_TWO_RELEASE_STATUS = false;
+bool LongPressB2Flag = false;
+int press_B2_delay_count = DELAY_DEBOUNCE_CN;
+int long_press_B2_delay_count = DELAY_PRESS_CN;
 
 /************************************************************************/
-/* Button 1 function													*/
+/* Button 1 function
+ */
 /************************************************************************/
 bool is_button_one_pressed(void) {
 
@@ -44,7 +40,6 @@ bool is_button_one_pressed(void) {
     BUTTON_ONE_PRESS_STATUS = false;
     press_B1_delay_count = DELAY_DEBOUNCE_CN;
     long_press_B1_delay_count = DELAY_PRESS_CN;
-
   }
 
   // long press delay logic
@@ -66,7 +61,8 @@ bool is_button_one_pressed(void) {
 }
 
 /************************************************************************/
-/* Button 2 function														*/
+/* Button 2 function
+ */
 /************************************************************************/
 bool is_button_two_pressed(void) {
 
@@ -79,7 +75,6 @@ bool is_button_two_pressed(void) {
     BUTTON_TWO_PRESS_STATUS = false;
     press_B2_delay_count = DELAY_DEBOUNCE_CN;
     long_press_B2_delay_count = DELAY_PRESS_CN;
-
   }
 
   // long press delay logic

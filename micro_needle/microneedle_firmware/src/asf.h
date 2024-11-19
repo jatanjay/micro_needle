@@ -117,7 +117,8 @@
 #include <tcc.h>
 #include <tcc_callback.h>
 
-// From module: USART - Serial interface- SAM implementation for devices with only USART
+// From module: USART - Serial interface- SAM implementation for devices with
+// only USART
 #include <serial.h>
 
 #endif // ASF_H
