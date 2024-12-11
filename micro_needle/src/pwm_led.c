@@ -9,7 +9,9 @@
 
 uint8_t pwm_led_toggle_count = 0;
 int flash_led_counter;
-extern void flash_pwm_led(void);
+// extern void flash_pwm_led(void);
+bool is_cycle_led;
+bool pwm_led_toggle_flag;
 
 void set_pwm_color_channel(uint8_t channel, bool enable) {
   if (enable) {
@@ -64,6 +66,7 @@ void configure_pwm_tcc(void) {
   tcc_get_config_defaults(&config_tcc, CONF_PWM_MODULE);
   config_tcc.compare.wave_generation = TCC_WAVE_GENERATION_SINGLE_SLOPE_PWM;
   config_tcc.counter.period = CONF_DEFAULT_PERIOD;
+  config_tcc.counter.clock_prescaler = TCC_CLOCK_PRESCALER_DIV64;
 
   config_tcc.compare.match[RED_CHANNEL] = ZERO_DUTY_CYCLE;
   config_tcc.compare.match[BLUE_CHANNEL] = ZERO_DUTY_CYCLE;
@@ -128,11 +131,28 @@ void configure_pwm_tcc(void) {
 // system_sleep();
 //}
 
+// void cycle_pwm_led(void) {
+//// flash_led_counter = 0;
+// switch (pwm_led_toggle_count) {
+// case 1:
+// is_cycle_led = true;
+// pwm_led_toggle_flag = true;
+// break;
+// case 6:
+// pwm_led_toggle_count = 0;
+// is_cycle_led = false;
+// pwm_led_system_cleanup(); // Reset to 1 for red
+// break;
+//}
+//}
+
 void cycle_pwm_led(void) {
   flash_led_counter = 0;
   switch (pwm_led_toggle_count) {
   case 1:
     SET_RED;
+    SET_BLU;
+    SET_GRN;
     break;
   case 6:
     pwm_led_toggle_count = 0;
@@ -141,15 +161,29 @@ void cycle_pwm_led(void) {
   }
 }
 
-void flash_pwm_led(void) {
+// void flicker_pwm_led(void) {
+// if (is_cycle_led) {
+// if (pwm_led_toggle_flag) {
+// pwm_led_toggle_flag = false;
+// SET_RED;
+// SET_BLU;
+// SET_GRN;
+//} else {
+////pwm_led_toggle_flag = true;
+////pwm_led_system_cleanup(); // Reset to 1 for red
+//}
+//}
+//}
 
-  if (flash_led_counter < 1) {
-    SET_RED;
-  }
-  if (flash_led_counter > 1 && flash_led_counter <= 3) {
-    SET_GRN;
-  }
-  if (flash_led_counter > 3) {
-    SET_BLU;
-  }
-}
+// void flash_pwm_led(void) {
+//
+// if (flash_led_counter < 1) {
+// SET_RED;
+//}
+// if (flash_led_counter > 1 && flash_led_counter <= 3) {
+// SET_GRN;
+//}
+// if (flash_led_counter > 3) {
+// SET_BLU;
+//}
+//}

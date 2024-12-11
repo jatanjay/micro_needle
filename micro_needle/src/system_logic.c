@@ -18,18 +18,24 @@ bool Chargn_Off_State;
 bool Charged_State;
 
 bool SYS_TICK_10MS;
+bool SYS_TICK_18MS;
+bool SYS_TICK_20MS;
+
+bool SYS_TICK_30MS;
 bool SYS_TICK_200MS;
+
 bool SYS_SLEEP;
 
 bool led_wave_flag = false;
-
+extern bool is_cycle_led;
 int SleepTickCount;
-extern int flash_led_counter = 0;
-void flash_pwm_led(void);
+// extern int flash_led_counter = 0;
+// void flash_pwm_led(void);
 
 void system_inactive(void) {
   motor_disable();          // shutdown PWM motor
   pwm_led_system_cleanup(); // shutdown illumination led
+  is_cycle_led = false;
   pwm_led_toggle_count = 0; // reset counter to start the routine from beginning
   reset_chip();
 }
@@ -82,13 +88,12 @@ void regular_routine(void) {
           !Vbus_State) { // makeshift to stop led array working when connected
         led_button_status_changed = true;
         motor_status_changed = true;
-
         pwm_led_toggle_count++;
         motor_toggle_count++;
 
-        if (motor_toggle_count == 0) {
-          led_wave_flag = true;
-        }
+        // if (motor_toggle_count == 0) {
+        // led_wave_flag = true;
+        //}
         // if(!BATTERY_LOWEST){
         cycle_pwm_led();
         if (!motor_running && motor_toggle_count == 1) {
@@ -96,7 +101,6 @@ void regular_routine(void) {
         } else {
           cycle_pwm_motor();
         }
-        //}
       }
     }
   }
@@ -264,22 +268,30 @@ void system_logic(void) {
     system_state(); // Get latest system_state
     regular_routine();
   }
+
+  // if (SYS_TICK_20MS) {
+  // SYS_TICK_20MS = false;
+  // if (is_cycle_led){
+  // flicker_pwm_led();
+  //}
+  //}
+
   if (SYS_TICK_200MS) {
     SYS_TICK_200MS = false;
-    toggle_nsleep();
     sample_adc();
     get_battery_level();
+    toggle_nsleep();
 
-    if (led_wave_flag) {
-      flash_led_counter++;
-      if (flash_led_counter > 7) {
-        flash_led_counter = 7;
-        led_wave_flag = false;
-      }
-      flash_pwm_led();
-    } else {
-      flash_led_counter = 0;
-    }
+    // if (led_wave_flag) {
+    // flash_led_counter++;
+    // if (flash_led_counter > 7) {
+    // flash_led_counter = 7;
+    // led_wave_flag = false;
+    //}
+    // flash_pwm_led();
+    //} else {
+    // flash_led_counter = 0;
+    //}
   }
   if (SYS_SLEEP) {
     SYS_SLEEP = false;

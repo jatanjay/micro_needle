@@ -8,6 +8,9 @@
 #include "system_setup.h"
 
 extern bool SYS_TICK_10MS = false;
+extern bool SYS_TICK_18MS = false;
+extern bool SYS_TICK_20MS = false;
+extern bool SYS_TICK_30MS = false;
 extern bool SYS_TICK_50MS = false;
 extern bool SYS_TICK_100MS = false;
 extern bool SYS_TICK_200MS = false;
@@ -141,6 +144,8 @@ void system_tc_callbacks(void) {
 void sys_tc_callback(struct tc_module *const module_inst) {
   static int tick_count_1ms;
   static int tick_count_10ms;
+  static int tick_count_20ms;
+  static int tick_count_18ms; // Counter for 18ms interval
   static int tick_count_50ms;
   static int tick_count_100ms;
   static int tick_count_200ms;
@@ -160,6 +165,12 @@ void sys_tc_callback(struct tc_module *const module_inst) {
                           // port_pin_toggle_output_level (LED0_PIN);
                           // //
     // visually check sys clock on PA16
+  }
+
+  if (tick_count_10ms >= 2) {
+    tick_count_20ms++;
+    // tick_count_10ms = 0;
+    SYS_TICK_20MS = true; // Flag for 18ms interval
   }
 
   // Check for 50ms interval
@@ -188,7 +199,7 @@ void sys_tc_callback(struct tc_module *const module_inst) {
     tick_count_100ms = 0;
     SYS_TICK_200MS = true; // Flag for 200ms interval
                            // port_pin_toggle_output_level (LED0_PIN);
-                           // //
+
     // visually check sys clock on PA16
   }
 

@@ -16,10 +16,10 @@ struct tcc_config config_tcc;
 struct tcc_module tcc_instance;
 
 #define CONF_PWM_MODULE TCC0
-#define CONF_DEFAULT_PERIOD 0xFFF
+#define CONF_DEFAULT_PERIOD 0x4FF
 #define CONF_DEFAULT_MATCH_COMPARE 0x000
 #define ZERO_DUTY_CYCLE 0x000
-#define INDICATION_LED_DUTY_CYCLE 0xFFF
+#define INDICATION_LED_DUTY_CYCLE 0x27F
 
 extern uint8_t pwm_led_toggle_count;
 
@@ -44,5 +44,6 @@ void set_pwm_color(int color);
 void set_pwm_color_channel(uint8_t channel, bool enable);
 
 void cycle_pwm_led(void);
+void flicker_pwm_led(void);
 
 #endif /* PWM_LED_H_ */
