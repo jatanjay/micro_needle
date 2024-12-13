@@ -71,7 +71,7 @@ void display_battery_state(void) {
         // set_color_red_indication();
         set_battery_low_routine(); //  blink
       } else if (BATTERY_CHARGED) {
-        set_color_green_indication();
+        // set_color_green_indication();
       } else {
         // set_color_yellow_indication();			// ideal
         // situation

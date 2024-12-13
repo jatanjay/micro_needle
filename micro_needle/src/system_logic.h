@@ -40,9 +40,30 @@ void system_inactive(void);
 void system_logic(void);
 void get_battery_level(void);
 
+// #define VOLTAGE_THRESH_MAX 0x0DDD		// 4
+// #define VOLTAGE_THRESH_LOW 0x0C71		// 0x0D2C -- 3.6
+// #define VOLTAGE_THRESH_LOWEST 0x0C4D		// 0x0C7A -- 3.54
+
+/*
+New Requirement:
+
+20% low,
+10% critically low
+
+
+operating window
+
+4 -- 3.54
+
+1. 20% = (4-3.54 = 0.46V) == New range = 0.80�0.46V = 0.368V = 4V - 0.368V
+= 3.632V
+2. 10% = 0.90�0.46V=0.414V == 4V - 0.414V = 3.586V
+
+*/
+
 #define VOLTAGE_THRESH_MAX 0x0DDD    // 4
-#define VOLTAGE_THRESH_LOW 0x0C71    // 0x0D2C -- 3.6
-#define VOLTAGE_THRESH_LOWEST 0x0C4D // 0x0C7A -- 3.54
+#define VOLTAGE_THRESH_LOW 0x0C96    // 0x0D2C -- 3.632V
+#define VOLTAGE_THRESH_LOWEST 0x0C6D // 0x0C7A -- 3.586V
 
 /*
 0x0C7A (3194.88) -- Calculated (3.6v)

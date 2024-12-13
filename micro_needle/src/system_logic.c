@@ -32,6 +32,17 @@ int SleepTickCount;
 // extern int flash_led_counter = 0;
 // void flash_pwm_led(void);
 
+void sys_sleep_logic(void);
+void put_to_sleep(void);
+
+void put_to_sleep(void) {
+  system_inactive(); // once entered sleep mode -- sys inactive
+  system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY); // set sleep mode 0
+  system_sleep();
+}
+
+void sys_sleep_logic(void) { put_to_sleep(); }
+
 void system_inactive(void) {
   motor_disable();          // shutdown PWM motor
   pwm_led_system_cleanup(); // shutdown illumination led
@@ -82,10 +93,10 @@ void regular_routine(void) {
     SleepTickCount = SLEEP_TICK_COUNT;
     if (LongPressB2Flag) {
       system_inactive();
-      LongPressB2Flag = false; // ALLOW IT TO CYCLE AGAIN
     } else {
       if (!motor_status_changed && !led_button_status_changed &&
           !Vbus_State) { // makeshift to stop led array working when connected
+
         led_button_status_changed = true;
         motor_status_changed = true;
         pwm_led_toggle_count++;
@@ -95,6 +106,7 @@ void regular_routine(void) {
         // led_wave_flag = true;
         //}
         // if(!BATTERY_LOWEST){
+
         cycle_pwm_led();
         if (!motor_running && motor_toggle_count == 1) {
           motor_enable();
@@ -251,16 +263,6 @@ void get_battery_level(void) {
 /************************************************************************/
 /* LOGIC MACHINE */
 /************************************************************************/
-void sys_sleep_logic(void);
-void put_to_sleep(void);
-
-void put_to_sleep(void) {
-  system_inactive(); // once entered sleep mode -- sys inactive
-  system_set_sleepmode(SYSTEM_SLEEPMODE_STANDBY); // set sleep mode 0
-  system_sleep();
-}
-
-void sys_sleep_logic(void) { put_to_sleep(); }
 
 void system_logic(void) {
   if (SYS_TICK_10MS) {
@@ -293,6 +295,7 @@ void system_logic(void) {
     // flash_led_counter = 0;
     //}
   }
+
   if (SYS_SLEEP) {
     SYS_SLEEP = false;
     sys_sleep_logic();

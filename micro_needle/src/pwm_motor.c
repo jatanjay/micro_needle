@@ -37,7 +37,7 @@ void motor_enable(void) {
   tc_enable(&pwm_generator_instance);
   port_pin_set_output_level(MOTOR_NSLEEP_PIN, HIGH);
   motor_running = true;
-  set_motor_speed_1_indication();
+  // set_motor_speed_1_indication();
 }
 
 void motor_disable(void) {
@@ -56,16 +56,16 @@ void cycle_pwm_motor(void) {
       if (motor_toggle_count == 2) {
         tc_set_compare_value(&pwm_generator_instance,
                              TC_COMPARE_CAPTURE_CHANNEL_0, FIRST_DUTY_CYCLE);
-        set_motor_speed_2_indication();
+        // set_motor_speed_2_indication();
       } else if (motor_toggle_count == 3) {
         tc_set_compare_value(&pwm_generator_instance,
                              TC_COMPARE_CAPTURE_CHANNEL_0, SECOND_DUTY_CYCLE);
-        set_motor_speed_3_indication();
+        // set_motor_speed_3_indication();
       } else if (motor_toggle_count == 4) {
         pulsating_motor_routine = true;
         tc_set_compare_value(&pwm_generator_instance,
                              TC_COMPARE_CAPTURE_CHANNEL_0, SECOND_DUTY_CYCLE);
-        set_motor_pulsating_indication();
+        // set_motor_pulsating_indication();
       }
 
       else if (motor_toggle_count > 4) {

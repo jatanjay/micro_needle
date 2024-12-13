@@ -16,10 +16,15 @@ struct tcc_config config_tcc;
 struct tcc_module tcc_instance;
 
 #define CONF_PWM_MODULE TCC0
-#define CONF_DEFAULT_PERIOD 0x4FF
+#define CONF_DEFAULT_PERIOD 0x4FF // 10ms
 #define CONF_DEFAULT_MATCH_COMPARE 0x000
 #define ZERO_DUTY_CYCLE 0x000
-#define INDICATION_LED_DUTY_CYCLE 0x27F
+#define INDICATION_LED_DUTY_CYCLE 0x4FE // 10ms
+
+// #define CONF_DEFAULT_PERIOD 0xFFF
+// #define CONF_DEFAULT_MATCH_COMPARE 0x000
+// #define ZERO_DUTY_CYCLE 0x000
+// #define INDICATION_LED_DUTY_CYCLE 0xFFF
 
 extern uint8_t pwm_led_toggle_count;
 

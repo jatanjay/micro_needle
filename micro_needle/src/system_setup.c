@@ -199,38 +199,41 @@ void sys_tc_callback(struct tc_module *const module_inst) {
     tick_count_100ms = 0;
     SYS_TICK_200MS = true; // Flag for 200ms interval
                            // port_pin_toggle_output_level (LED0_PIN);
-
-    // visually check sys clock on PA16
   }
 
-  if (SYS_TICK_200MS) {
+  if (SYS_TICK_200MS || LongPressB2Flag) {
+    if (LongPressB2Flag) {
+      SleepTickCount = 25;
+    }
+    LongPressB2Flag = false;
     SleepTickCount--;
     if (SleepTickCount < 1) {
       SYS_SLEEP = true;
     }
   }
-
-  // if (tick_count_200ms >= 2)
-  //{
-  // tick_count_500ms++;
-  // tick_count_200ms = 0;
-  // SYS_TICK_500MS = true;                                  // Flag for 500ms
-  // interval
-  ////port_pin_toggle_output_level (LED0_PIN);               // visually check
-  /// sys clock on PA16
-  //}
-  //
-  //// Check for 1000ms interval
-  // if (tick_count_500ms >= 2)
-  //{
-  // tick_count_1000ms++;
-  // tick_count_500ms = 0;
-  // SYS_TICK_1000MS = true;                                 // Flag for 1000ms
-  // interval
-  ////port_pin_toggle_output_level (LED0_PIN);               // visually check
-  /// sys clock on PA16
-  //}
 }
+
+// if (tick_count_200ms >= 2)
+//{
+// tick_count_500ms++;
+// tick_count_200ms = 0;
+// SYS_TICK_500MS = true;                                  // Flag for 500ms
+// interval
+////port_pin_toggle_output_level (LED0_PIN);               // visually check
+/// sys clock on PA16
+//}
+//
+//// Check for 1000ms interval
+// if (tick_count_500ms >= 2)
+//{
+// tick_count_1000ms++;
+// tick_count_500ms = 0;
+// SYS_TICK_1000MS = true;                                 // Flag for 1000ms
+// interval
+////port_pin_toggle_output_level (LED0_PIN);               // visually check
+/// sys clock on PA16
+//}
+//}
 
 // SW0_EIC_PIN;
 // SW0_EIC_MUX;
@@ -291,7 +294,7 @@ void configure_extint_channel(void) {
   config_extint_chan.gpio_pin_mux = MUX_PA15A_EIC_EXTINT1;
   config_extint_chan.wake_if_sleeping = true;
   config_extint_chan.gpio_pin_pull = EXTINT_PULL_UP;
-  config_extint_chan.detection_criteria = EXTINT_DETECT_BOTH;
+  config_extint_chan.detection_criteria = EXTINT_DETECT_FALLING;
   extint_chan_set_config(BUTTON_0_EIC_LINE_custom, &config_extint_chan);
 
   extint_chan_get_config_defaults(&config_extint_chan);
@@ -299,7 +302,7 @@ void configure_extint_channel(void) {
   config_extint_chan.gpio_pin_mux = MUX_PA11A_EIC_EXTINT3;
   config_extint_chan.wake_if_sleeping = true;
   config_extint_chan.gpio_pin_pull = EXTINT_PULL_UP;
-  config_extint_chan.detection_criteria = EXTINT_DETECT_BOTH;
+  config_extint_chan.detection_criteria = EXTINT_DETECT_FALLING;
   extint_chan_set_config(PA_11_EIC_LINE_custom, &config_extint_chan);
 }
 
@@ -315,12 +318,7 @@ void configure_extint_callbacks(void) {
                               EXTINT_CALLBACK_TYPE_DETECT);
 }
 
-void extint_detection_callback(void) {
-  // motor_enable();
-  // LED_Off(LED0_PIN);
-  // set_color_cyan_indication();
-  SleepTickCount = SLEEP_TICK_COUNT;
-}
+void extint_detection_callback(void) { SleepTickCount = SLEEP_TICK_COUNT; }
 
 // void put_to_sleep(void);
 // void put_to_sleep(void){

@@ -47,7 +47,7 @@ struct tc_module
 #define SYSTEM_TC_PIN_OUT PIN_PA16E_TC1_WO0
 #define SYSTEM_TC_MUX_OUT MUX_PA16E_TC1_WO0
 
-#define SLEEP_TIME_IN_MIN 10
+#define SLEEP_TIME_IN_MIN 15 // changed to 15mins 12/11
 #define SLEEP_TICK_COUNT 5 * SLEEP_TIME_IN_MIN * 60
 
 // extern bool SYS_TICK_10MS;
