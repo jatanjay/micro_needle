@@ -1,2 +1,2 @@
 # micro_needle
-firmware for microneedle
+## Firmware for Microneedle, a skin collagen repair handheld device
