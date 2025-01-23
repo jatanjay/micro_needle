@@ -137,11 +137,12 @@ src/button.d src/button.o: ../src/button.c ../src/button.h ../src/asf.h \
  ../src/ASF/sam0/drivers/tc/tc_interrupt.h \
  ../src/ASF/sam0/drivers/tc/tc.h ../src/ASF/sam0/drivers/tcc/tcc.h \
  ../src/ASF/sam0/drivers/tcc/tcc_callback.h \
- ../src/ASF/sam0/drivers/tcc/tcc.h ../src/system_setup.h ../src/asf.h \
- ../src/led_driver.h ../src/pwm_led.h ../src/conf_example.h \
- ../src/adc_sample.h ../src/pwm_motor.h ../src/system_setup.h \
+ ../src/ASF/sam0/drivers/tcc/tcc.h ../src/system_setup.h \
+ ../src/adc_sample.h ../src/asf.h ../src/led_driver.h ../src/pwm_led.h \
+ ../src/conf_example.h ../src/pwm_motor.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\math.h \
- ../src/system_logic.h ../src/button.h ../src/system_state.h
+ ../src/system_logic.h ../src/system_setup.h ../src/button.h \
+ ../src/system_state.h
 
 ../src/button.h:
 
@@ -435,6 +436,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/system_setup.h:
 
+../src/adc_sample.h:
+
 ../src/asf.h:
 
 ../src/led_driver.h:
@@ -443,15 +446,13 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/conf_example.h:
 
-../src/adc_sample.h:
-
 ../src/pwm_motor.h:
-
-../src/system_setup.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\math.h:
 
 ../src/system_logic.h:
+
+../src/system_setup.h:
 
 ../src/button.h:
 

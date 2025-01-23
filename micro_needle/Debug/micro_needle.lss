@@ -15,21 +15,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .comment      00000059  00000000  00000000  0002004a  2**0
                   CONTENTS, READONLY
-  6 .debug_info   00057b49  00000000  00000000  000200a3  2**0
+  6 .debug_info   00057b48  00000000  00000000  000200a3  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00005f60  00000000  00000000  00077bec  2**0
+  7 .debug_abbrev 00005f60  00000000  00000000  00077beb  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_loc    00007ab1  00000000  00000000  0007db4c  2**0
+  8 .debug_loc    00007ab1  00000000  00000000  0007db4b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_aranges 00000868  00000000  00000000  000855fd  2**0
+  9 .debug_aranges 00000868  00000000  00000000  000855fc  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_ranges 00000918  00000000  00000000  00085e65  2**0
+ 10 .debug_ranges 00000918  00000000  00000000  00085e64  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_macro  0001b469  00000000  00000000  0008677d  2**0
+ 11 .debug_macro  0001b469  00000000  00000000  0008677c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_line   00015251  00000000  00000000  000a1be6  2**0
+ 12 .debug_line   00015251  00000000  00000000  000a1be5  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_str    0007d31f  00000000  00000000  000b6e37  2**0
+ 13 .debug_str    0007d31f  00000000  00000000  000b6e36  2**0
                   CONTENTS, READONLY, DEBUGGING
  14 .debug_frame  0000140c  00000000  00000000  00134158  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -2288,7 +2288,6 @@ void regular_routine(void) {
      b68:	2b00      	cmp	r3, #0
      b6a:	d125      	bne.n	bb8 <regular_routine+0x64>
       system_inactive();
-       //LongPressB2Flag = false;
     } else {
       if (!motor_status_changed && !led_button_status_changed &&
      b6c:	4b2e      	ldr	r3, [pc, #184]	; (c28 <regular_routine+0xd4>)
@@ -2582,10 +2581,10 @@ void system_logic(void) {
      d04:	781b      	ldrb	r3, [r3, #0]
      d06:	2b00      	cmp	r3, #0
      d08:	d10c      	bne.n	d24 <system_logic+0x2c>
+    //} else {
+    // flash_led_counter = 0;
     //}
   }
-
-
 
   if (SYS_SLEEP) {
      d0a:	4b10      	ldr	r3, [pc, #64]	; (d4c <system_logic+0x54>)
@@ -2750,7 +2749,6 @@ void sys_sleep_logic(void) { put_to_sleep(); }
   }
 
   if (SYS_TICK_200MS || LongPressB2Flag) {
-
     if (LongPressB2Flag) {
      dd6:	4b1a      	ldr	r3, [pc, #104]	; (e40 <sys_tc_callback+0xf0>)
      dd8:	781b      	ldrb	r3, [r3, #0]
