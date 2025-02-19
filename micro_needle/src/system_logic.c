@@ -153,19 +153,19 @@ void regular_routine(void) {
   // led_button_status_changed = false;
   //}
 
-  //if (Vbus_State == false) {
-	  //; // Enable Motor PWM
+  // if (Vbus_State == false) {
+  //; // Enable Motor PWM
   //} else {
-//
-    //if (motor_running) {
-      //system_inactive();
-    //}
-    //// ITS PLUGGED IN
-    //if (Chargn_On_State == false) { // battery charging (plugged in)
-      //BATTERY_CHARGING = true;      // show battery charge routine
-    //} else {
-      //BATTERY_CHARGING = false;
-    //}
+  //
+  // if (motor_running) {
+  // system_inactive();
+  //}
+  //// ITS PLUGGED IN
+  // if (Chargn_On_State == false) { // battery charging (plugged in)
+  // BATTERY_CHARGING = true;      // show battery charge routine
+  //} else {
+  // BATTERY_CHARGING = false;
+  //}
   //}
 }
 
@@ -276,16 +276,15 @@ void system_logic(void) {
   if (SYS_TICK_10MS) {
     SYS_TICK_10MS = false;
     system_state(); // Get latest system_state
-    
-	if (!Vbus_State){
-		regular_routine();
-	}else{
-		if (motor_running) {
-			system_inactive();
-		}
-		
-	}
-	// toggle_nsleep();
+
+    if (!Vbus_State) {
+      regular_routine();
+    } else {
+      if (motor_running) {
+        system_inactive();
+      }
+    }
+    // toggle_nsleep();
   }
 
   if (SYS_TICK_100MS) {
