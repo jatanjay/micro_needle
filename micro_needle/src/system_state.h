@@ -21,5 +21,6 @@ void update_battery_states(void);
 void get_charging_off_status_state(void);
 void display_battery_state(void);
 void system_state(void);
+void display_battery_state_before_shutdown(void);
 
 #endif /* SYSTEM_STATE_H_ */

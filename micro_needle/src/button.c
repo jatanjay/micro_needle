@@ -26,6 +26,9 @@ bool LongPressB2Flag = false;
 int press_B2_delay_count = DELAY_DEBOUNCE_CN;
 int long_press_B2_delay_count = DELAY_PRESS_CN;
 
+bool BUTTON_TWO_TAKE_ACTION = false;
+bool BUTTON_TWO_READY_TAKE_ACTION = false;
+
 /************************************************************************/
 /* Button 1 function
  */
@@ -45,20 +48,23 @@ bool is_button_one_pressed(void) {
 
   // long press delay logic
   if (long_press_B1_delay_count <= 0) {
-    LongPressB1Flag = true;
     long_press_B1_delay_count = 0;
+    LongPressB1Flag = true;
   }
 
   // debounce logic
   if (press_B1_delay_count <= 0) {
-    BUTTON_ONE_RELEASE_STATUS = false;
     press_B1_delay_count = 0;
+    BUTTON_ONE_RELEASE_STATUS = false;
+
     return true;
 
   } else {
     BUTTON_ONE_RELEASE_STATUS = true;
     return false;
   }
+
+  return false;
 }
 
 /************************************************************************/
@@ -74,24 +80,47 @@ bool is_button_two_pressed(void) {
 
   } else {
     BUTTON_TWO_PRESS_STATUS = false;
+    BUTTON_TWO_RELEASE_STATUS = true;
     press_B2_delay_count = DELAY_DEBOUNCE_CN;
     long_press_B2_delay_count = DELAY_PRESS_CN;
+    if (BUTTON_TWO_READY_TAKE_ACTION) {
+      BUTTON_TWO_READY_TAKE_ACTION = false;
+      BUTTON_TWO_TAKE_ACTION = true;
+      return true;
+    }
   }
 
   // long press delay logic
   if (long_press_B2_delay_count <= 0) {
     LongPressB2Flag = true;
+	
     long_press_B2_delay_count = 0;
+    BUTTON_TWO_READY_TAKE_ACTION = false;
+    BUTTON_TWO_TAKE_ACTION = false;      
+	
+    return true;
   }
 
   // debounce logic
   if (press_B2_delay_count <= 0) {
     BUTTON_TWO_RELEASE_STATUS = false;
     press_B2_delay_count = 0;
-    return true;
+    BUTTON_TWO_READY_TAKE_ACTION = true;
 
+    // return true;
   } else {
     BUTTON_TWO_RELEASE_STATUS = true;
     return false;
   }
+
+  return false;
+}
+
+bool is_button_two_take_action(void) {
+
+  if (BUTTON_TWO_TAKE_ACTION) {
+    BUTTON_TWO_TAKE_ACTION = false;
+    return true;
+  }
+  return false;
 }

@@ -15,15 +15,19 @@ bool pwm_led_toggle_flag;
 
 void set_pwm_color_channel(uint8_t channel, bool enable) {
   if (enable) {
+	tcc_enable(&tcc_instance);
     tcc_set_compare_value(&tcc_instance, channel, INDICATION_LED_DUTY_CYCLE);
   } else {
     tcc_set_compare_value(&tcc_instance, channel, ZERO_DUTY_CYCLE);
+	//tcc_set_compare_value(&tcc_instance, channel, 0x0FF);
+	tcc_disable(&tcc_instance);
   }
 
   tcc_force_double_buffer_update(&tcc_instance);
 }
 
 void pwm_led_system_cleanup(void) {
+	//tcc_disable(&tcc_instance);
   set_pwm_color_channel(RED_CHANNEL, false);
   set_pwm_color_channel(BLUE_CHANNEL, false);
   set_pwm_color_channel(GREEN_CHANNEL, false);
@@ -72,6 +76,12 @@ void configure_pwm_tcc(void) {
   config_tcc.compare.match[BLUE_CHANNEL] = ZERO_DUTY_CYCLE;
   config_tcc.compare.match[GREEN_CHANNEL] = ZERO_DUTY_CYCLE;
   config_tcc.compare.match[WHITE_CHANNEL] = ZERO_DUTY_CYCLE;
+  
+  //config_tcc.compare.wave_polarity[RED_CHANNEL] = TCC_WAVE_POLARITY_1;
+  //config_tcc.compare.wave_polarity[BLUE_CHANNEL] = TCC_WAVE_POLARITY_1;
+  //config_tcc.compare.wave_polarity[GREEN_CHANNEL] = TCC_WAVE_POLARITY_1;
+  //config_tcc.compare.wave_polarity[WHITE_CHANNEL] = TCC_WAVE_POLARITY_1;
+  
 
   config_tcc.pins.wave_out_pin[RED_CHANNEL] = PIN_PA04F_TCC0_WO0; // RED
   config_tcc.pins.wave_out_pin_mux[RED_CHANNEL] = MUX_PA04F_TCC0_WO0;
@@ -90,7 +100,7 @@ void configure_pwm_tcc(void) {
   config_tcc.pins.enable_wave_out_pin[WHITE_CHANNEL] = true;
 
   tcc_init(&tcc_instance, CONF_PWM_MODULE, &config_tcc);
-  tcc_enable(&tcc_instance);
+  //tcc_enable(&tcc_instance);
 }
 
 // void cycle_pwm_led(void) {

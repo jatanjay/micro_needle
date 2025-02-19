@@ -41,5 +41,5 @@ extern int long_press_B2_delay_count;
 /************************************************************************/
 bool is_button_one_pressed(void);
 bool is_button_two_pressed(void);
-
+bool is_button_two_take_action(void);
 #endif /* BUTTON_H_ */

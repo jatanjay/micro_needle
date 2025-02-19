@@ -61,7 +61,7 @@ operating window
 
 */
 
-#define VOLTAGE_THRESH_MAX 0x0DDD    // 4
+#define VOLTAGE_THRESH_MAX 0x0D84    // 3.9
 #define VOLTAGE_THRESH_LOW 0x0C96    // 0x0D2C -- 3.632V
 #define VOLTAGE_THRESH_LOWEST 0x0C6D // 0x0C7A -- 3.586V
 
