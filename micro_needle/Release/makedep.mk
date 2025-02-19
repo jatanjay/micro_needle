@@ -18,8 +18,6 @@ src\pwm_led.c
 
 src\pwm_motor.c
 
-src\state_machine.c
-
 src\system_logic.c
 
 src\system_setup.c
