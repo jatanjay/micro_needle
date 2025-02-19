@@ -11,6 +11,9 @@
 /*
 
 Firmware for Skin Collagen Repair Device using SAMD11
+
+
+800 uA consumption during sleep mode
 */
 
 #endif /* README_H_ */

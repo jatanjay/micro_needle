@@ -7,8 +7,6 @@
 
 #include <system_logic.h>
 
-bool BATTERY_CHARGING = false;
-bool BATTERY_CHARGED = false;
 bool BATTERY_LOW = false;
 bool BATTERY_LOWEST = false;
 
@@ -93,7 +91,7 @@ void regular_routine(void) {
 
   **/
 
-  if (is_button_two_pressed() && !SYS_READY_TO_SLEEP) {
+  if (is_button_two_pressed() && !SYS_READY_TO_SLEEP && !Vbus_State) {
     if (LongPressB2Flag) {
       LongPressB2Flag = false;
       // display_battery_state_before_shutdown();
@@ -155,20 +153,20 @@ void regular_routine(void) {
   // led_button_status_changed = false;
   //}
 
-  if (Vbus_State == false) {
-    ; // Enable Motor PWM
-  } else {
-
-    if (motor_running) {
-      system_inactive();
-    }
-    // ITS PLUGGED IN
-    if (Chargn_On_State == false) { // battery charging (plugged in)
-      BATTERY_CHARGING = true;      // show battery charge routine
-    } else {
-      BATTERY_CHARGING = false;
-    }
-  }
+  //if (Vbus_State == false) {
+	  //; // Enable Motor PWM
+  //} else {
+//
+    //if (motor_running) {
+      //system_inactive();
+    //}
+    //// ITS PLUGGED IN
+    //if (Chargn_On_State == false) { // battery charging (plugged in)
+      //BATTERY_CHARGING = true;      // show battery charge routine
+    //} else {
+      //BATTERY_CHARGING = false;
+    //}
+  //}
 }
 
 // void regular_routine(void) {
@@ -278,8 +276,16 @@ void system_logic(void) {
   if (SYS_TICK_10MS) {
     SYS_TICK_10MS = false;
     system_state(); // Get latest system_state
-    regular_routine();
-    // toggle_nsleep();
+    
+	if (!Vbus_State){
+		regular_routine();
+	}else{
+		if (motor_running) {
+			system_inactive();
+		}
+		
+	}
+	// toggle_nsleep();
   }
 
   if (SYS_TICK_100MS) {
@@ -291,25 +297,19 @@ void system_logic(void) {
     SYS_TICK_200MS = false;
     sample_adc();
     get_battery_level();
-    // toggle_nsleep();
-    // if (LongPressB2Flag) {
-    //// LongPressB2Flag = false;
-    //// display_battery_state_before_shutdown();
-    //// SleepTickCount = 25;
-    //}
     SleepTickCount--;
 
     if (SleepTickCount < 1) {
       // LongPressB2Flag = false;
       SYS_SLEEP = true;
-    } else if (SleepTickCount < 25) {
+    } else if ((SleepTickCount < 25 && !SYS_READY_TO_SLEEP)) {
       SYS_READY_TO_SLEEP = true;
       system_inactive();
       display_battery_state_before_shutdown();
     }
   }
 
-  if (SYS_SLEEP) {
+  if (SYS_SLEEP && !Vbus_State) {
     // SleepTickCount = SLEEP_TICK_COUNT;
     SYS_SLEEP = false;
     SYS_READY_TO_SLEEP = false;

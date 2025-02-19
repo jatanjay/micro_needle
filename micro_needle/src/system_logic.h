@@ -30,7 +30,7 @@ typedef enum {
   BATTERY_STATE_CHARGED,
 } BatteryState;
 
-extern bool BATTERY_CHARGING;
+//extern bool BATTERY_CHARGING;
 extern bool BATTERY_CHARGED;
 extern bool BATTERY_LOW;
 extern bool BATTERY_LOWEST;
