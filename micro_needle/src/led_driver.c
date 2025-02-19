@@ -38,7 +38,7 @@ struct i2c_master_packet packet = {KTD2026_DEVICE_ADDRESS, DATA_LENGTH_PRIMARY};
   { 0x05, 0xEF }
 #define BUFFER_SET_CHARGE_ROUTINE_PWM1_TIMER                                   \
   { 0x02, 0x1C }
-#define BUFFER_SET_COLOR_GREEN_BRIGHTNESS                                        \
+#define BUFFER_SET_COLOR_GREEN_BRIGHTNESS                                      \
   { 0x04, 0x00 }
 
 #define BUFFER_SET_COLOR_RED_PWM                                               \
@@ -152,7 +152,7 @@ void set_battery_charge_routine(void) {
   uint8_t buffer_set_charge_routine_PWM1_timer[DATA_LENGTH_PRIMARY] =
       BUFFER_SET_CHARGE_ROUTINE_PWM1_TIMER;
   uint8_t buffer_set_charge_brightness[DATA_LENGTH_PRIMARY] =
-	  BUFFER_SET_COLOR_GREEN_BRIGHTNESS; 
+      BUFFER_SET_COLOR_GREEN_BRIGHTNESS;
 
   packet.address = KTD2026_DEVICE_ADDRESS;
   packet.data_length = DATA_LENGTH_PRIMARY;
@@ -161,12 +161,7 @@ void set_battery_charge_routine(void) {
   while ((i2c_master_write_packet_wait(&i2c_master_instance, &packet)) !=
          STATUS_OK) {
   }
-  
-  //packet.data = buffer_set_charge_brightness;
-  //while ((i2c_master_write_packet_wait(&i2c_master_instance, &packet)) !=
-  //STATUS_OK) {
-  //}
-  
+
   packet.data = buffer_set_charge_routine_flash_period;
   while ((i2c_master_write_packet_wait(&i2c_master_instance, &packet)) !=
          STATUS_OK) {
@@ -179,9 +174,6 @@ void set_battery_charge_routine(void) {
   while ((i2c_master_write_packet_wait(&i2c_master_instance, &packet)) !=
          STATUS_OK) {
   }
-  
-  
-  
 }
 
 void set_battery_low_routine(void) {

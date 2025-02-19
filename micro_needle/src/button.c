@@ -93,11 +93,13 @@ bool is_button_two_pressed(void) {
   // long press delay logic
   if (long_press_B2_delay_count <= 0) {
     LongPressB2Flag = true;
-	
-    long_press_B2_delay_count = 0;
+    BUTTON_TWO_PRESS_STATUS = false;
+    BUTTON_TWO_RELEASE_STATUS = true;
+    press_B2_delay_count = DELAY_DEBOUNCE_CN;
+    long_press_B2_delay_count = DELAY_PRESS_CN;
     BUTTON_TWO_READY_TAKE_ACTION = false;
-    BUTTON_TWO_TAKE_ACTION = false;      
-	
+    BUTTON_TWO_TAKE_ACTION = false;
+
     return true;
   }
 
@@ -120,6 +122,7 @@ bool is_button_two_take_action(void) {
 
   if (BUTTON_TWO_TAKE_ACTION) {
     BUTTON_TWO_TAKE_ACTION = false;
+
     return true;
   }
   return false;

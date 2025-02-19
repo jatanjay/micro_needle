@@ -10,19 +10,7 @@
 
 /*
 
-11/12/2024
-
-Update firmware for new board -- latest (1 button) requirement
-
-
-# Major Changes:
-
-
-
-
-
-
-
+Firmware for Skin Collagen Repair Device using SAMD11
 */
 
 #endif /* README_H_ */

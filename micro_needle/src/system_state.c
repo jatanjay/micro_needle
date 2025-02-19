@@ -22,7 +22,6 @@ bool BATTERY_LOWEST;
 
 #define VBUS_STATE port_pin_get_input_level(VBUS_PIN)
 #define CHARGED_STATE port_pin_get_input_level(BAT_CHARGED_PIN)
-// #define CHARGN_OFF_STATE port_pin_get_input_level(CHARGN_OFF_PIN)
 
 void update_battery_states(void) {
   Vbus_State = VBUS_STATE;
@@ -74,9 +73,9 @@ void display_battery_state(void) {
 void display_battery_state_before_shutdown(void) {
 
   if (BATTERY_LOWEST) {
-     //set_battery_low_routine();					// blink
+    // set_battery_low_routine();					// blink
   } else if (BATTERY_LOW) {
-	set_battery_low_routine();					// blink
+    set_battery_low_routine(); // blink
   } else if (BATTERY_CHARGED) {
     set_color_green_indication();
   } else {

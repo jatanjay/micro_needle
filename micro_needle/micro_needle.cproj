@@ -786,12 +786,6 @@
     <Compile Include="src\readme.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\state_machine.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\state_machine.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\system_logic.c">
       <SubType>compile</SubType>
     </Compile>

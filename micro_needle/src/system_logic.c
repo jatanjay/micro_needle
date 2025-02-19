@@ -20,11 +20,14 @@ bool Charged_State;
 bool SYS_TICK_10MS;
 bool SYS_TICK_18MS;
 bool SYS_TICK_20MS;
+bool SYS_TICK_100MS;
 
 bool SYS_TICK_30MS;
 bool SYS_TICK_200MS;
 
 bool SYS_SLEEP;
+
+extern bool SYS_READY_TO_SLEEP = false;
 
 bool led_wave_flag = false;
 extern bool is_cycle_led;
@@ -45,6 +48,7 @@ void put_to_sleep(void) {
 void sys_sleep_logic(void) { put_to_sleep(); }
 
 void system_inactive(void) {
+
   motor_disable(); // shutdown PWM motor
   is_cycle_led = false;
   pwm_led_toggle_count = 0; // reset counter to start the routine from beginning
@@ -89,12 +93,12 @@ void regular_routine(void) {
 
   **/
 
-  if (is_button_two_pressed()) {
+  if (is_button_two_pressed() && !SYS_READY_TO_SLEEP) {
     if (LongPressB2Flag) {
       LongPressB2Flag = false;
-      //display_battery_state_before_shutdown();
+      // display_battery_state_before_shutdown();
       SleepTickCount = 25;
-      
+
     } else if (is_button_two_take_action()) {
       SleepTickCount = SLEEP_TICK_COUNT;
       // if (!motor_status_changed && !led_button_status_changed &&
@@ -275,41 +279,40 @@ void system_logic(void) {
     SYS_TICK_10MS = false;
     system_state(); // Get latest system_state
     regular_routine();
+    // toggle_nsleep();
   }
 
-  // if (SYS_TICK_20MS) {
-  // SYS_TICK_20MS = false;
-  // if (is_cycle_led){
-  // flicker_pwm_led();
-  //}
-  //}
+  if (SYS_TICK_100MS) {
+    SYS_TICK_100MS = false;
+    toggle_nsleep();
+  }
 
   if (SYS_TICK_200MS) {
     SYS_TICK_200MS = false;
     sample_adc();
     get_battery_level();
-    toggle_nsleep();
-
-    //if (LongPressB2Flag) {
-      //// LongPressB2Flag = false;
-      //// display_battery_state_before_shutdown();
-      //// SleepTickCount = 25;
+    // toggle_nsleep();
+    // if (LongPressB2Flag) {
+    //// LongPressB2Flag = false;
+    //// display_battery_state_before_shutdown();
+    //// SleepTickCount = 25;
     //}
     SleepTickCount--;
 
-    
-
     if (SleepTickCount < 1) {
-		// LongPressB2Flag = false;
-		SYS_SLEEP = true;
-    }else if (SleepTickCount < 25) {
-		system_inactive();
-		display_battery_state_before_shutdown();
+      // LongPressB2Flag = false;
+      SYS_SLEEP = true;
+    } else if (SleepTickCount < 25) {
+      SYS_READY_TO_SLEEP = true;
+      system_inactive();
+      display_battery_state_before_shutdown();
     }
   }
 
   if (SYS_SLEEP) {
+    // SleepTickCount = SLEEP_TICK_COUNT;
     SYS_SLEEP = false;
+    SYS_READY_TO_SLEEP = false;
     sys_sleep_logic();
   }
 }

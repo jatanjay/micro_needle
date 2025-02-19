@@ -47,26 +47,10 @@ struct tc_module
 #define SYSTEM_TC_PIN_OUT PIN_PA16E_TC1_WO0
 #define SYSTEM_TC_MUX_OUT MUX_PA16E_TC1_WO0
 
-#define SLEEP_TIME_IN_MIN 1 // changed to 15mins 12/11
-//#define SLEEP_TICK_COUNT 5 * SLEEP_TIME_IN_MIN * 60
-#define SLEEP_TICK_COUNT 50
+#define SLEEP_TIME_IN_MIN 15 // changed to 15mins 12/11
+#define SLEEP_TICK_COUNT 5 * SLEEP_TIME_IN_MIN * 60
 
-
-
-// extern bool SYS_TICK_10MS;
-// extern bool SYS_TICK_50MS;
-// extern bool SYS_TICK_100MS;
-// extern bool SYS_TICK_200MS;
-// extern bool SYS_SLEEP;
-
-// extern bool SYS_TICK_500MS;
-// extern bool SYS_TICK_1000MS;
-
-// bool SYS_SLEEP = false;
-
-// #define SLEEP_TIME_IN_MIN			1
-// #define SLEEP_TICK_COUNT			5*SLEEP_TIME_IN_MIN*60
-// int SleepTickCount			 =		SLEEP_TICK_COUNT;
+bool SYS_READY_TO_SLEEP;
 
 /************************************************************************/
 /* Function Prototypes
