@@ -23,6 +23,10 @@ bool SYS_TICK_100MS;
 bool SYS_TICK_30MS;
 bool SYS_TICK_200MS;
 
+
+int sleep_countdown = 10;
+
+
 bool SYS_SLEEP;
 
 extern bool SYS_READY_TO_SLEEP = false;
@@ -95,7 +99,7 @@ void regular_routine(void) {
     if (LongPressB2Flag) {
       LongPressB2Flag = false;
       // display_battery_state_before_shutdown();
-      SleepTickCount = 25;
+      SleepTickCount = sleep_countdown;
 
     } else if (is_button_two_take_action()) {
       SleepTickCount = SLEEP_TICK_COUNT;
@@ -284,7 +288,6 @@ void system_logic(void) {
         system_inactive();
       }
     }
-    // toggle_nsleep();
   }
 
   if (SYS_TICK_100MS) {
@@ -301,7 +304,7 @@ void system_logic(void) {
     if (SleepTickCount < 1) {
       // LongPressB2Flag = false;
       SYS_SLEEP = true;
-    } else if ((SleepTickCount < 25 && !SYS_READY_TO_SLEEP)) {
+    } else if ((SleepTickCount < sleep_countdown && !SYS_READY_TO_SLEEP)) {
       SYS_READY_TO_SLEEP = true;
       system_inactive();
       display_battery_state_before_shutdown();

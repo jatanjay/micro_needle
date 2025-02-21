@@ -35,6 +35,9 @@ extern bool BATTERY_CHARGED;
 extern bool BATTERY_LOW;
 extern bool BATTERY_LOWEST;
 
+
+
+
 void regular_routine(void);
 void system_inactive(void);
 void system_logic(void);
@@ -64,6 +67,9 @@ operating window
 #define VOLTAGE_THRESH_MAX 0x0D84    // 3.9
 #define VOLTAGE_THRESH_LOW 0x0C96    // 0x0D2C -- 3.632V
 #define VOLTAGE_THRESH_LOWEST 0x0C6D // 0x0C7A -- 3.586V
+
+
+
 
 /*
 0x0C7A (3194.88) -- Calculated (3.6v)
