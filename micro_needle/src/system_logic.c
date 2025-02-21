@@ -23,9 +23,7 @@ bool SYS_TICK_100MS;
 bool SYS_TICK_30MS;
 bool SYS_TICK_200MS;
 
-
 int sleep_countdown = 10;
-
 
 bool SYS_SLEEP;
 

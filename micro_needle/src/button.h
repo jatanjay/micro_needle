@@ -15,7 +15,7 @@
 /* BUTTON DEBOUNCE DEFNS	                                            */
 /************************************************************************/
 
-#define DELAY_PRESS_CN 150
+#define DELAY_PRESS_CN 150 // 1.5 seconds long-press
 #define DELAY_DEBOUNCE_CN 10
 
 /************************************************************************/

@@ -11,11 +11,10 @@ extern bool Vbus_State;
 extern bool Charged_State;
 bool Chargn_Off_State;
 
-//bool BATTERY_CHARGING;
+// bool BATTERY_CHARGING;
 bool BATTERY_CHARGED;
 bool BATTERY_LOW;
 bool BATTERY_LOWEST;
-
 
 bool reset_led_after_disconnect = false;
 
@@ -47,19 +46,17 @@ void display_battery_state(void) {
   */
 
   if (Vbus_State) {
-	  
 
     // port_pin_set_output_level(BAT_CHARGED_PIN, false);
     // system_inactive();
     // // turn  off all motor/ led array if plugged in
     if (!Charged_State) {
-      set_battery_charge_routine(); //  blink	  	  
-	  reset_led_after_disconnect = true;
+      set_battery_charge_routine(); //  blink
+      reset_led_after_disconnect = true;
     } else {
       set_color_green_indication();
     }
-	
-	
+
     //} else {
     //
     // if (!motor_running) {
@@ -75,11 +72,11 @@ void display_battery_state(void) {
     //} else {
     //}
     //}
-  }else{
-	  if(reset_led_after_disconnect){
-		  reset_led_after_disconnect = false;
-		  reset_chip();	  
-	}	  
+  } else {
+    if (reset_led_after_disconnect) {
+      reset_led_after_disconnect = false;
+      reset_chip();
+    }
   }
 }
 

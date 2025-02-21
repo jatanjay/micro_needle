@@ -1728,7 +1728,7 @@ void set_pwm_color_channel(uint8_t channel, bool enable) {
      8bc:	bd10      	pop	{r4, pc}
      8be:	46c0      	nop			; (mov r8, r8)
      8c0:	200000f0 	.word	0x200000f0
-     8c4:	0000045c 	.word	0x0000045c
+     8c4:	00000467 	.word	0x00000467
      8c8:	000ff80f 	.word	0x000ff80f
 
 000008cc <pwm_led_system_cleanup>:
@@ -3352,7 +3352,6 @@ void display_battery_state(void) {
     1138:	781b      	ldrb	r3, [r3, #0]
     113a:	2b00      	cmp	r3, #0
     113c:	d00c      	beq.n	1158 <display_battery_state+0x24>
-	  
 
     // port_pin_set_output_level(BAT_CHARGED_PIN, false);
     // system_inactive();
@@ -3362,9 +3361,9 @@ void display_battery_state(void) {
     1140:	781b      	ldrb	r3, [r3, #0]
     1142:	2b00      	cmp	r3, #0
     1144:	d105      	bne.n	1152 <display_battery_state+0x1e>
-      set_battery_charge_routine(); //  blink	  	  
+      set_battery_charge_routine(); //  blink
     1146:	f001 fbff 	bl	2948 <set_battery_charge_routine>
-	  reset_led_after_disconnect = true;
+      reset_led_after_disconnect = true;
     114a:	2201      	movs	r2, #1
     114c:	4b0a      	ldr	r3, [pc, #40]	; (1178 <display_battery_state+0x44>)
     114e:	701a      	strb	r2, [r3, #0]
@@ -3377,23 +3376,23 @@ void display_battery_state(void) {
     //} else {
     //}
     //}
-  }else{
-	  if(reset_led_after_disconnect){
+  } else {
+    if (reset_led_after_disconnect) {
     1158:	4b07      	ldr	r3, [pc, #28]	; (1178 <display_battery_state+0x44>)
     115a:	781b      	ldrb	r3, [r3, #0]
     115c:	2b00      	cmp	r3, #0
     115e:	d100      	bne.n	1162 <display_battery_state+0x2e>
-		  reset_led_after_disconnect = false;
-		  reset_chip();	  
-	}	  
+      reset_led_after_disconnect = false;
+      reset_chip();
+    }
   }
 }
     1160:	bd10      	pop	{r4, pc}
-		  reset_led_after_disconnect = false;
+      reset_led_after_disconnect = false;
     1162:	2200      	movs	r2, #0
     1164:	4b04      	ldr	r3, [pc, #16]	; (1178 <display_battery_state+0x44>)
     1166:	701a      	strb	r2, [r3, #0]
-		  reset_chip();	  
+      reset_chip();
     1168:	f001 fbd2 	bl	2910 <reset_chip>
 }
     116c:	e7f8      	b.n	1160 <display_battery_state+0x2c>
