@@ -23,15 +23,15 @@ bool SYS_TICK_100MS;
 bool SYS_TICK_30MS;
 bool SYS_TICK_200MS;
 
-int sleep_countdown = 10;
+static int sleep_countdown = 10;
 
-bool SYS_SLEEP;
+static bool SYS_SLEEP = false;
 
-extern bool SYS_READY_TO_SLEEP = false;
+bool SYS_READY_TO_SLEEP = false;
 
 bool led_wave_flag = false;
 extern bool is_cycle_led;
-int SleepTickCount;
+static int SleepTickCount;
 // extern int flash_led_counter = 0;
 // void flash_pwm_led(void);
 

@@ -41,10 +41,11 @@ enum ColorChannel {
 #define SET_RED set_pwm_color(0)
 #define SET_GRN set_pwm_color(1)
 #define SET_BLU set_pwm_color(2)
-#define SET_WHT set_pwm_color(3)
-#define SET_YLW set_pwm_color(4)
-#define SET_PLE set_pwm_color(5)
-#define SET_CYN set_pwm_color(6)
+
+// #define SET_WHT set_pwm_color(3)
+// #define SET_YLW set_pwm_color(4)
+// #define SET_PLE set_pwm_color(5)
+// #define SET_CYN set_pwm_color(6)
 
 void pwm_led_system_cleanup(void);
 void configure_pwm_tcc(void);
@@ -52,6 +53,5 @@ void set_pwm_color(int color);
 void set_pwm_color_channel(uint8_t channel, bool enable);
 
 void cycle_pwm_led(void);
-void flicker_pwm_led(void);
 
 #endif /* PWM_LED_H_ */

@@ -61,9 +61,9 @@ operating window
 
 */
 
-#define VOLTAGE_THRESH_MAX 0x0D84    // 3.9
-#define VOLTAGE_THRESH_LOW 0x0C96    // 0x0D2C -- 3.632V
-#define VOLTAGE_THRESH_LOWEST 0x0C6D // 0x0C7A -- 3.586V
+#define VOLTAGE_THRESH_MAX 0x0D84    // 3.9V
+#define VOLTAGE_THRESH_LOW 0x0C96    // 3.632V (20% battery)
+#define VOLTAGE_THRESH_LOWEST 0x0C6D // 3.586V (10% battery)
 
 /*
 0x0C7A (3194.88) -- Calculated (3.6v)

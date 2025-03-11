@@ -7,16 +7,16 @@
 
 #include "system_setup.h"
 
-extern bool SYS_TICK_10MS = false;
-extern bool SYS_TICK_18MS = false;
-extern bool SYS_TICK_20MS = false;
-extern bool SYS_TICK_30MS = false;
-extern bool SYS_TICK_50MS = false;
-extern bool SYS_TICK_100MS = false;
-extern bool SYS_TICK_200MS = false;
+bool SYS_TICK_10MS = false;
+bool SYS_TICK_18MS = false;
+bool SYS_TICK_20MS = false;
+bool SYS_TICK_30MS = false;
+bool SYS_TICK_50MS = false;
+bool SYS_TICK_100MS = false;
+bool SYS_TICK_200MS = false;
+bool SYS_SLEEP = false;
 
-extern bool SYS_SLEEP = false;
-extern int SleepTickCount = SLEEP_TICK_COUNT;
+int SleepTickCount = SLEEP_TICK_COUNT;
 
 /************************************************************************/
 /* GPIO - PIN SETUP
@@ -145,7 +145,6 @@ void sys_tc_callback(struct tc_module *const module_inst) {
   static int tick_count_1ms;
   static int tick_count_10ms;
   static int tick_count_20ms;
-  static int tick_count_18ms; // Counter for 18ms interval
   static int tick_count_50ms;
   static int tick_count_100ms;
   static int tick_count_200ms;

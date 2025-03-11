@@ -101,59 +101,6 @@ void configure_pwm_tcc(void) {
   // tcc_enable(&tcc_instance);
 }
 
-// void cycle_pwm_led(void) {
-// switch (pwm_led_toggle_count) {
-// case 1:
-// SET_RED;
-// break;
-// case 2:
-// SET_GRN;
-// break;
-// case 3:
-// SET_BLU;
-// break;
-// case 4:
-// SET_YLW;
-// break;
-// case 5:
-// SET_PLE;
-// break;
-// case 6:
-// SET_CYN;
-// break;
-// case 7:
-// SET_WHT;
-// break;
-//
-//
-// default:
-// case 8:
-// pwm_led_system_cleanup();
-// // Reset to 1 for red pwm_led_toggle_count = 0; break;
-//}
-//}
-
-// New update; only red color
-// void enter_sleep(void){
-// system_set_sleepmode(SYSTEM_SLEEPMODE_IDLE_0);
-// system_sleep();
-//}
-
-// void cycle_pwm_led(void) {
-//// flash_led_counter = 0;
-// switch (pwm_led_toggle_count) {
-// case 1:
-// is_cycle_led = true;
-// pwm_led_toggle_flag = true;
-// break;
-// case 6:
-// pwm_led_toggle_count = 0;
-// is_cycle_led = false;
-// pwm_led_system_cleanup(); // Reset to 1 for red
-// break;
-//}
-//}
-
 void cycle_pwm_led(void) {
   flash_led_counter = 0;
   switch (pwm_led_toggle_count) {
@@ -168,30 +115,3 @@ void cycle_pwm_led(void) {
     break;
   }
 }
-
-// void flicker_pwm_led(void) {
-// if (is_cycle_led) {
-// if (pwm_led_toggle_flag) {
-// pwm_led_toggle_flag = false;
-// SET_RED;
-// SET_BLU;
-// SET_GRN;
-//} else {
-////pwm_led_toggle_flag = true;
-////pwm_led_system_cleanup(); // Reset to 1 for red
-//}
-//}
-//}
-
-// void flash_pwm_led(void) {
-//
-// if (flash_led_counter < 1) {
-// SET_RED;
-//}
-// if (flash_led_counter > 1 && flash_led_counter <= 3) {
-// SET_GRN;
-//}
-// if (flash_led_counter > 3) {
-// SET_BLU;
-//}
-//}
