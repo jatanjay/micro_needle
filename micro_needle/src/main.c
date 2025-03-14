@@ -2,8 +2,8 @@
 /************************************************************************/
 /* PWM_MOTOR_CONTROL :: 3 - SPEED, with system 10ms TC */
 /* auth: jatan pandya
-/* QuireTech LLC /*
-/* date: 3/12/2025 - v.1.2.3 */
+QuireTech LLC 
+date: 3/12/2025 - v.1.2.3
 
 /* version log 
 1.0.0 = PWM Motor actuation on button #1 press, Indication LED cycle (7) colors
